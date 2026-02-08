@@ -11,7 +11,7 @@ const ptSans = PT_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'RecipePal',
+  title: 'Crouton',
   description: 'Your modern companion for recipe management and meal planning.',
 };
 

@@ -1,4 +1,4 @@
-# Firebase Studio
+# Crouton
 
 This is a NextJS starter in Firebase Studio.
 

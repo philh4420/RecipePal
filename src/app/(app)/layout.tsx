@@ -53,7 +53,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <Logo />
               </Link>
             </Button>
-            <span className="text-lg font-semibold">RecipePal</span>
+            <span className="text-lg font-semibold">Crouton</span>
           </div>
         </SidebarHeader>
         <SidebarContent>

@@ -12,11 +12,9 @@ export function Logo({ className }: { className?: string }) {
       strokeLinejoin="round"
       className={cn("h-6 w-6", className)}
     >
-      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2Z" />
-      <path d="M12 15a3 3 0 0 0 3-3H9a3 3 0 0 0 3 3Z" />
-      <path d="m12 9-1-1" />
-      <path d="m15 12-1-1" />
-      <path d="m9 12-1-1" />
+      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+      <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+      <line x1="12" y1="22.08" x2="12" y2="12"></line>
     </svg>
   );
 }

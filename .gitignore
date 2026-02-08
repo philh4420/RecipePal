@@ -50,6 +50,7 @@ next-env.d.ts
 
 # Firebase
 .firebaserc
+firebase-debug.log
 
 # Studio / IDE specific
 .idx/

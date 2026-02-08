@@ -68,7 +68,7 @@ export default function RecipeDetailsPage() {
         )}
       </div>
 
-      <div className="relative h-96 w-full overflow-hidden rounded-lg shadow-lg">
+      <div className="relative h-96 w-full overflow-hidden rounded-lg shadow-xl">
          <Image
             src={imageUrl}
             alt={recipe.name}
@@ -102,7 +102,7 @@ export default function RecipeDetailsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-1">
           <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
-          <ul className="space-y-2.5 list-disc list-inside bg-secondary/50 p-4 rounded-lg border">
+          <ul className="space-y-2.5 list-disc list-inside bg-card p-4 rounded-lg border shadow-sm">
             {recipe.ingredients.map((ingredient, index) => (
               <li key={index} className="ml-2">{ingredient}</li>
             ))}

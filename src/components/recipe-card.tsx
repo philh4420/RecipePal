@@ -76,11 +76,11 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
 
   return (
     <>
-      <div className="relative group">
+      <div className="relative group animate-in fade-in-0 zoom-in-95">
         <Link href={`/recipes/${recipe.id}`} className="absolute inset-0 z-10" aria-label={`View ${recipe.name}`}>
           <span className="sr-only">View Recipe</span>
         </Link>
-        <Card className="overflow-hidden h-full transition-shadow group-hover:shadow-lg">
+        <Card className="overflow-hidden h-full">
           <CardHeader className="p-0 relative">
             <Image
               src={imageUrl}

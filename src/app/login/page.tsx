@@ -59,7 +59,7 @@ export default function LoginPage() {
            <div className="flex justify-center mb-4">
             <Logo className="h-10 w-10" />
           </div>
-          <CardTitle className="text-2xl">Welcome to Crouton</CardTitle>
+          <CardTitle className="text-2xl">Welcome to RecipePal</CardTitle>
           <CardDescription>
             Sign in to save your recipes and plan your meals.
           </CardDescription>

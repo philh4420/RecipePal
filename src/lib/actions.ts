@@ -48,28 +48,3 @@ export async function getShoppingList(): Promise<{ shoppingList?: string[]; erro
     return { error: 'Failed to generate shopping list. Please try again.' };
   }
 }
-
-const manualRecipeSchema = z.object({
-  title: z.string().min(3, "Title must be at least 3 characters."),
-  servings: z.coerce.number().min(1, "Servings must be at least 1."),
-  ingredients: z.string().min(10, "Ingredients seem a bit short."),
-  instructions: z.string().min(10, "Instructions seem a bit short."),
-});
-
-export async function addManualRecipe(values: z.infer<typeof manualRecipeSchema>) {
-    const validatedFields = manualRecipeSchema.safeParse(values);
-
-    if (!validatedFields.success) {
-        return { error: "Invalid fields." };
-    }
-
-    // For now, we'll just log the data to the console.
-    // In the future, we will save this to the database.
-    console.log("New Recipe Added:", validatedFields.data);
-
-    // We can also split ingredients by newline
-    const ingredientsArray = validatedFields.data.ingredients.split('\n').filter(line => line.trim() !== '');
-    console.log("Parsed Ingredients:", ingredientsArray);
-
-    return { success: "Recipe added successfully!" };
-}

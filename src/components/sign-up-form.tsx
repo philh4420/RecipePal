@@ -14,12 +14,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/firebase';
+import { useAuth, useFirestore } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
+import { createUserProfileDocument } from '@/lib/user';
 
 const formSchema = z.object({
   email: z.string().email({
@@ -38,6 +39,7 @@ const formSchema = z.object({
 export function SignUpForm() {
   const [loading, setLoading] = useState(false);
   const auth = useAuth();
+  const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -51,10 +53,12 @@ export function SignUpForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!auth) return;
+    if (!auth || !firestore) return;
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, values.email, values.password);
+      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+      // Create the user profile document in Firestore
+      createUserProfileDocument(firestore, userCredential.user);
       router.push('/recipes');
     } catch (error: any) {
       console.error('Error signing up', error);

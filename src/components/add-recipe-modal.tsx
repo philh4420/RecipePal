@@ -28,8 +28,9 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { addManualRecipe } from '@/lib/actions';
-import { useTransition } from 'react';
+import { addRecipe } from '@/lib/recipes';
+import { useFirestore, useUser } from '@/firebase';
+import { Loader } from 'lucide-react';
 
 const formSchema = z.object({
   title: z.string().min(3, {
@@ -46,11 +47,12 @@ const formSchema = z.object({
   }),
 });
 
-
 export function AddRecipeModal() {
   const [open, setOpen] = React.useState(false);
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = React.useState(false);
   const { toast } = useToast();
+  const firestore = useFirestore();
+  const { user } = useUser();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,23 +65,33 @@ export function AddRecipeModal() {
   });
 
   const handleManualSubmit = (values: z.infer<typeof formSchema>) => {
-    startTransition(async () => {
-      const result = await addManualRecipe(values);
-      if (result.error) {
-        toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: result.error,
-        });
-      } else {
-        toast({
-          title: 'Recipe Added!',
-          description: 'Your new recipe has been saved successfully.',
-        });
-        form.reset();
-        setOpen(false);
-      }
-    });
+    if (!firestore || !user) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'You must be logged in to add a recipe.',
+      });
+      return;
+    }
+    setLoading(true);
+
+    try {
+      addRecipe(firestore, user.uid, values);
+      toast({
+        title: 'Recipe Added!',
+        description: 'Your new recipe has been saved successfully.',
+      });
+      form.reset();
+      setOpen(false);
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Could not save recipe. Please try again.',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleImportSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -89,7 +101,6 @@ export function AddRecipeModal() {
       title: 'Coming Soon!',
       description: 'Importing recipes from a URL will be available shortly.',
     });
-    // setOpen(false);
   };
 
   return (
@@ -192,8 +203,8 @@ export function AddRecipeModal() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full" disabled={isPending}>
-                  {isPending ? 'Saving...' : 'Save Recipe'}
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? <><Loader className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Save Recipe'}
                 </Button>
               </form>
             </Form>

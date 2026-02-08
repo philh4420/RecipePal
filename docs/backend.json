@@ -22,8 +22,7 @@
       },
       "required": [
         "id",
-        "email",
-        "username"
+        "email"
       ]
     },
     "Recipe": {
@@ -45,8 +44,11 @@
           "description": "Name of the recipe."
         },
         "ingredients": {
-          "type": "string",
-          "description": "Ingredients for the recipe."
+          "type": "array",
+          "description": "Ingredients for the recipe.",
+          "items": {
+            "type": "string"
+          }
         },
         "instructions": {
           "type": "string",
@@ -76,7 +78,6 @@
         }
       },
       "required": [
-        "id",
         "userId",
         "name",
         "ingredients",
@@ -193,7 +194,8 @@
   "auth": {
     "providers": [
       "password",
-      "anonymous"
+      "anonymous",
+      "google.com"
     ]
   },
   "firestore": {

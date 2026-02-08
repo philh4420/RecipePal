@@ -1,12 +1,14 @@
 export interface Recipe {
     id: string;
+    userId: string;
     name: string;
     ingredients: string[];
     instructions: string;
     servings: number;
-    collectionId?: string;
-    image: string;
-    imageHint: string;
+    url?: string;
+    imageUrl?: string;
+    prepTime?: number;
+    cookTime?: number;
   }
   
   export interface Collection {

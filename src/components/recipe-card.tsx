@@ -9,22 +9,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 interface RecipeCardProps {
   recipe: Recipe;
 }
 
 export function RecipeCard({ recipe }: RecipeCardProps) {
+  const imageUrl = recipe.imageUrl || PlaceHolderImages[0].imageUrl;
+
   return (
     <Card className="overflow-hidden">
       <CardHeader className="p-0 relative">
         <Image
-          src={recipe.image}
+          src={imageUrl}
           alt={recipe.name}
           width={400}
           height={250}
           className="aspect-[16/10] w-full object-cover"
-          data-ai-hint={recipe.imageHint}
         />
         <div className="absolute top-2 right-2">
            <DropdownMenu>

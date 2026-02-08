@@ -1,9 +1,9 @@
 'use server';
 
 import { generateShoppingList } from "@/ai/flows/generate-shopping-list";
+import { importRecipe } from "@/ai/flows/import-recipe-flow";
 import { mealPlan, recipes as allRecipes } from "./data";
-import type { Recipe as AiRecipe } from "@/ai/flows/generate-shopping-list";
-import { z } from "zod";
+import type { AiRecipe, ImportRecipeOutput } from "@/ai/types";
 
 // A simple function to get all unique recipes from the meal plan
 function getRecipesFromMealPlan(): AiRecipe[] {
@@ -47,4 +47,15 @@ export async function getShoppingList(): Promise<{ shoppingList?: string[]; erro
     console.error(e);
     return { error: 'Failed to generate shopping list. Please try again.' };
   }
+}
+
+// New action to extract recipe from URL
+export async function extractRecipeFromUrl(url: string): Promise<{ recipe?: ImportRecipeOutput; error?: string }> {
+    try {
+        const recipe = await importRecipe({ url });
+        return { recipe };
+    } catch (e: any) {
+        console.error('Error extracting recipe from URL:', e);
+        return { error: e.message || 'Failed to extract recipe from the provided URL. Please check the URL or try another one.' };
+    }
 }

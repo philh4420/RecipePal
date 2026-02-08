@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, Loader, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -30,10 +30,10 @@ import {
 } from '@/components/ui/form';
 import { addRecipe } from '@/lib/recipes';
 import { useFirestore, useUser } from '@/firebase';
-import { Loader } from 'lucide-react';
+import { extractRecipeFromUrl } from '@/lib/actions';
 
-const formSchema = z.object({
-  title: z.string().min(3, {
+const manualFormSchema = z.object({
+  name: z.string().min(3, {
     message: 'Title must be at least 3 characters.',
   }),
   servings: z.coerce.number().min(1, {
@@ -47,24 +47,36 @@ const formSchema = z.object({
   }),
 });
 
+const importFormSchema = z.object({
+  url: z.string().url({ message: 'Please enter a valid URL.' }),
+});
+
 export function AddRecipeModal() {
   const [open, setOpen] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  const [isSaving, setIsSaving] = React.useState(false);
+  const [isImporting, setIsImporting] = React.useState(false);
   const { toast } = useToast();
   const firestore = useFirestore();
   const { user } = useUser();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const manualForm = useForm<z.infer<typeof manualFormSchema>>({
+    resolver: zodResolver(manualFormSchema),
     defaultValues: {
-      title: '',
+      name: '',
       servings: 1,
       ingredients: '',
       instructions: '',
     },
   });
 
-  const handleManualSubmit = (values: z.infer<typeof formSchema>) => {
+  const importForm = useForm<z.infer<typeof importFormSchema>>({
+    resolver: zodResolver(importFormSchema),
+    defaultValues: {
+      url: '',
+    },
+  });
+
+  const handleManualSubmit = (values: z.infer<typeof manualFormSchema>) => {
     if (!firestore || !user) {
       toast({
         variant: 'destructive',
@@ -73,7 +85,7 @@ export function AddRecipeModal() {
       });
       return;
     }
-    setLoading(true);
+    setIsSaving(true);
 
     try {
       addRecipe(firestore, user.uid, values);
@@ -81,7 +93,7 @@ export function AddRecipeModal() {
         title: 'Recipe Added!',
         description: 'Your new recipe has been saved successfully.',
       });
-      form.reset();
+      manualForm.reset();
       setOpen(false);
     } catch (error) {
       toast({
@@ -90,17 +102,53 @@ export function AddRecipeModal() {
         description: 'Could not save recipe. Please try again.',
       });
     } finally {
-      setLoading(false);
+      setIsSaving(false);
     }
   };
 
-  const handleImportSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // TODO: Implement URL import functionality
-    toast({
-      title: 'Coming Soon!',
-      description: 'Importing recipes from a URL will be available shortly.',
-    });
+  const handleImportSubmit = async (values: z.infer<typeof importFormSchema>) => {
+    if (!firestore || !user) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'You must be logged in to import a recipe.',
+      });
+      return;
+    }
+    setIsImporting(true);
+    setIsSaving(true);
+
+    const result = await extractRecipeFromUrl(values.url);
+
+    if (result.error || !result.recipe) {
+      toast({
+        variant: 'destructive',
+        title: 'Import Failed',
+        description: result.error || 'Could not extract recipe from the URL.',
+      });
+      setIsImporting(false);
+      setIsSaving(false);
+      return;
+    }
+
+    try {
+      addRecipe(firestore, user.uid, { ...result.recipe, url: values.url });
+      toast({
+        title: 'Recipe Imported!',
+        description: `${result.recipe.name} has been added to your collection.`,
+      });
+      importForm.reset();
+      setOpen(false);
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error Saving Recipe',
+        description: 'The recipe was imported but could not be saved. Please try again.',
+      });
+    } finally {
+      setIsImporting(false);
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -124,25 +172,43 @@ export function AddRecipeModal() {
             <TabsTrigger value="manual">Manual Entry</TabsTrigger>
           </TabsList>
           <TabsContent value="import">
-            <form onSubmit={handleImportSubmit} className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="url">Recipe URL</Label>
-                <Input
-                  id="url"
-                  placeholder="https://example.com/your-favorite-recipe"
+            <Form {...importForm}>
+              <form onSubmit={importForm.handleSubmit(handleImportSubmit)} className="space-y-4 py-4">
+                <FormField
+                  control={importForm.control}
+                  name="url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Recipe URL</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="https://example.com/your-favorite-recipe"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <Button type="submit" className="w-full">
-                Import Recipe
-              </Button>
-            </form>
+                <Button type="submit" className="w-full" disabled={isImporting || isSaving}>
+                  {isImporting ? (
+                    <>
+                      <Sparkles className="mr-2 h-4 w-4 animate-spin" />
+                      Importing with AI...
+                    </>
+                  ) : (
+                    'Import Recipe'
+                  )}
+                </Button>
+              </form>
+            </Form>
           </TabsContent>
           <TabsContent value="manual">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleManualSubmit)} className="space-y-4 py-4 max-h-[60vh] overflow-y-auto pr-2">
+            <Form {...manualForm}>
+              <form onSubmit={manualForm.handleSubmit(handleManualSubmit)} className="space-y-4 py-4 max-h-[60vh] overflow-y-auto pr-2">
                 <FormField
-                  control={form.control}
-                  name="title"
+                  control={manualForm.control}
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Recipe Title</FormLabel>
@@ -154,7 +220,7 @@ export function AddRecipeModal() {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={manualForm.control}
                   name="servings"
                   render={({ field }) => (
                     <FormItem>
@@ -167,7 +233,7 @@ export function AddRecipeModal() {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={manualForm.control}
                   name="ingredients"
                   render={({ field }) => (
                     <FormItem>
@@ -187,7 +253,7 @@ export function AddRecipeModal() {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={manualForm.control}
                   name="instructions"
                   render={({ field }) => (
                     <FormItem>
@@ -203,8 +269,8 @@ export function AddRecipeModal() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? <><Loader className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Save Recipe'}
+                <Button type="submit" className="w-full" disabled={isSaving}>
+                  {isSaving && !isImporting ? <><Loader className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Save Recipe'}
                 </Button>
               </form>
             </Form>

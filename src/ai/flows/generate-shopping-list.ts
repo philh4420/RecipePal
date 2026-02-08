@@ -13,26 +13,8 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { GenerateShoppingListInput, GenerateShoppingListOutput, GenerateShoppingListInputSchema, GenerateShoppingListOutputSchema } from '@/ai/types';
 
-const RecipeSchema = z.object({
-  name: z.string().describe('The name of the recipe.'),
-  ingredients: z.array(z.string()).describe('The list of ingredients for the recipe.'),
-  servings: z.number().describe('The number of servings the recipe makes.'),
-});
-
-export type Recipe = z.infer<typeof RecipeSchema>;
-
-const GenerateShoppingListInputSchema = z.object({
-  recipes: z.array(RecipeSchema).describe('The list of recipes to generate the shopping list from.'),
-});
-
-export type GenerateShoppingListInput = z.infer<typeof GenerateShoppingListInputSchema>;
-
-const GenerateShoppingListOutputSchema = z.object({
-  shoppingList: z.array(z.string()).describe('The consolidated shopping list with quantities adjusted.'),
-});
-
-export type GenerateShoppingListOutput = z.infer<typeof GenerateShoppingListOutputSchema>;
 
 export async function generateShoppingList(input: GenerateShoppingListInput): Promise<GenerateShoppingListOutput> {
   return generateShoppingListFlow(input);

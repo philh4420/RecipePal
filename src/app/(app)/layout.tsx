@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Logo } from '@/components/logo';
@@ -13,13 +14,20 @@ import {
   SidebarFooter,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { CalendarDays, UtensilsCrossed, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useUser } from '@/firebase';
+import React from 'react';
+import { UserButton } from '@/components/user-button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Loader } from 'lucide-react';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, loading } = useUser();
 
   const menuItems = [
     {
@@ -38,6 +46,22 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       icon: ShoppingCart,
     },
   ];
+
+  React.useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
+
+  if (loading || !user) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <Loader className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
 
   return (
     <SidebarProvider>
@@ -77,7 +101,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-            {/* Can add user profile or settings here later */}
+            <UserButton />
         </SidebarFooter>
       </Sidebar>
       <SidebarInset className="p-4 sm:p-6 lg:p-8 max-w-full">

@@ -1,8 +1,10 @@
+
 import type { Metadata } from 'next';
 import { PT_Sans } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
+import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 const ptSans = PT_Sans({
   subsets: ['latin'],
@@ -31,7 +33,9 @@ export default function RootLayout({
         />
       </head>
       <body className={cn('font-body antialiased', ptSans.variable)}>
-        {children}
+        <FirebaseClientProvider>
+          {children}
+        </FirebaseClientProvider>
         <Toaster />
       </body>
     </html>

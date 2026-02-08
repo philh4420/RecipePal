@@ -5,12 +5,16 @@ import { RecipeCard } from '@/components/recipe-card';
 import { Input } from '@/components/ui/input';
 import { useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
-import { Loader, Search, BookOpen } from 'lucide-react';
+import { Loader, Search, BookOpen, PlusCircle } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import React from 'react';
+import { Button } from '@/components/ui/button';
 
 export default function RecipesPage() {
   const { user } = useUser();
   const firestore = useFirestore();
+  const [addModalOpen, setAddModalOpen] = React.useState(false);
+
 
   const recipesQuery = useMemoFirebase(() => {
     if (!user || !firestore) return null;
@@ -28,7 +32,11 @@ export default function RecipesPage() {
             Your personal collection of delicious recipes.
           </p>
         </div>
-        <AddRecipeModal />
+        <Button onClick={() => setAddModalOpen(true)}>
+            <PlusCircle className="mr-2" />
+            Add Recipe
+        </Button>
+        <AddRecipeModal open={addModalOpen} onOpenChange={setAddModalOpen} />
       </div>
 
       <div className="relative">

@@ -1,11 +1,11 @@
 'use client';
 
-import { collection, Firestore } from 'firebase/firestore';
-import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { collection, doc, Firestore } from 'firebase/firestore';
+import { addDocumentNonBlocking, deleteDocumentNonBlocking, updateDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { PlaceHolderImages } from './placeholder-images';
 
 // A more flexible type for recipe data, accommodating both manual and imported recipes.
-interface RecipeData {
+export interface RecipeData {
   name: string;
   servings?: number;
   ingredients: string[] | string; // Can be a string from textarea or string[] from AI
@@ -45,4 +45,38 @@ export function addRecipe(firestore: Firestore, userId: string, recipeData: Reci
 
   // Use the non-blocking fire-and-forget update
   addDocumentNonBlocking(recipesCollectionRef, newRecipe);
+}
+
+
+/**
+ * Updates an existing recipe in Firestore.
+ * @param firestore The Firestore instance.
+ * @param userId The ID of the current user.
+ * @param recipeId The ID of the recipe to update.
+ * @param recipeData The new data for the recipe.
+ */
+export function updateRecipe(firestore: Firestore, userId: string, recipeId: string, recipeData: Partial<RecipeData>) {
+    const recipeDocRef = doc(firestore, `users/${userId}/recipes`, recipeId);
+
+    // Create a mutable copy to work with
+    const updateData: { [key: string]: any } = { ...recipeData };
+
+    // Handle ingredient conversion if it's a string
+    if (typeof updateData.ingredients === 'string') {
+        updateData.ingredients = updateData.ingredients.split('\n').filter((line: string) => line.trim() !== '');
+    }
+
+    updateDocumentNonBlocking(recipeDocRef, updateData);
+}
+
+
+/**
+ * Deletes a recipe from the user's subcollection in Firestore.
+ * @param firestore The Firestore instance.
+ * @param userId The ID of the current user.
+ * @param recipeId The ID of the recipe to delete.
+ */
+export function deleteRecipe(firestore: Firestore, userId: string, recipeId: string) {
+    const recipeDocRef = doc(firestore, `users/${userId}/recipes`, recipeId);
+    deleteDocumentNonBlocking(recipeDocRef);
 }

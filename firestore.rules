@@ -1,0 +1,169 @@
+/**
+ * Core Philosophy: This ruleset enforces a strict user-ownership model where all data is private to the user who created it.
+ * There is no concept of public or shared data. The security model is built on the principle that if a user is authenticated,
+ * they can only access documents located within their own dedicated data tree.
+ *
+ * Data Structure: All application data is hierarchically organized and nested under the `/users/{userId}` path.
+ * Collections such as `recipes`, `collections`, `mealPlans`, and `shoppingLists` exist as subcollections within each user's
+ * document space. This path-based ownership is the primary mechanism for authorization.
+ *
+ * Key Security Decisions:
+ * - User Enumeration is Disabled: Listing documents from the top-level `/users` collection is explicitly forbidden to protect user privacy.
+ * - No Public Access: All read and write operations require user authentication. There is no publicly readable data.
+ * - Strict Data Segregation: All data is private. A user can NEVER see or modify another user's data. This is enforced by matching
+ *   the `userId` in the document path with the authenticated user's UID.
+ *
+ * Denormalization for Authorization: The data structure itself is a form of denormalization for security. By nesting all user
+ * content under a path containing their `userId`, we achieve simple, performant, and secure rules without needing costly `get()`
+ * calls to check ownership on related documents. Each subcollection document also contains a `userId` field to maintain
+ * relational integrity, which is enforced on write operations.
+ *
+ * Structural Segregation: The use of distinct subcollections for `recipes`, `collections`, `mealPlans`, etc., under the user's
+ * path ensures that queries are always scoped to a single, secure data type for a specific user. This is a secure and
+ * performant pattern.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ----------------------------------------------------------------------
+    // Helper Functions
+    // ----------------------------------------------------------------------
+
+    /**
+     * Checks if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Checks if the currently authenticated user's ID matches the provided userId.
+     * This is the cornerstone of the ownership model.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * Checks for ownership on an existing document. Used for update and delete.
+     * Ensures operations don't target non-existent documents.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    /**
+     * Validates that a new User document has an 'id' field matching its document ID.
+     * Enforces consistency between the path and the data payload on creation.
+     */
+    function isCreatingValidUser(userId) {
+      return request.resource.data.id == userId;
+    }
+
+    /**
+     * Validates that the 'id' field of a User document is immutable on update.
+     * Prevents re-assigning the core identifier of a user profile.
+     */
+    function isUpdatingValidUser() {
+      return request.resource.data.id == resource.data.id;
+    }
+
+    /**
+     * Validates that a new document in a user subcollection has a 'userId'
+     * field matching the user ID from the path.
+     */
+    function isCreatingValidOwnedDocument(userId) {
+      return request.resource.data.userId == userId;
+    }
+
+    /**
+     * Validates that the 'userId' field of a subcollection document is immutable.
+     * Prevents changing the ownership of an existing document.
+     */
+    function isUpdatingValidOwnedDocument() {
+      return request.resource.data.userId == resource.data.userId;
+    }
+
+    // ----------------------------------------------------------------------
+    // Collection Rules
+    // ----------------------------------------------------------------------
+
+    /**
+     * @description Manages user profile documents.
+     * @path /users/{userId}
+     * @allow (get, update, delete) A user can manage their own profile document. (e.g., auth.uid == 'user123' operates on /users/user123).
+     * @allow (create) A new user can create their own profile document.
+     * @deny (list) Listing all users is forbidden to prevent user enumeration.
+     * @deny (get, update, create) A user cannot access another user's profile. (e.g., auth.uid == 'user123' operates on /users/user456).
+     * @principle Restricts access to a user's own data tree and prevents user enumeration.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) && isCreatingValidUser(userId);
+      allow update: if isExistingOwner(userId) && isUpdatingValidUser();
+      allow delete: if isExistingOwner(userId);
+
+      /**
+       * @description Manages recipes owned by a user.
+       * @path /users/{userId}/recipes/{recipeId}
+       * @allow (get, list, create, update, delete) A user can manage their own recipes. (e.g., auth.uid == 'user123' operates on /users/user123/recipes/abc).
+       * @deny (get, list, create, update, delete) A user cannot access another user's recipes. (e.g., auth.uid == 'user123' operates on /users/user456/recipes/xyz).
+       * @principle Enforces document ownership within a user's private subcollection.
+       */
+      match /recipes/{recipeId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId) && isCreatingValidOwnedDocument(userId);
+        allow update: if isExistingOwner(userId) && isUpdatingValidOwnedDocument();
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description Manages recipe collections owned by a user.
+       * @path /users/{userId}/collections/{collectionId}
+       * @allow (get, list, create, update, delete) A user can manage their own recipe collections. (e.g., auth.uid == 'user123' operates on /users/user123/collections/abc).
+       * @deny (get, list, create, update, delete) A user cannot access another user's recipe collections. (e.g., auth.uid == 'user123' operates on /users/user456/collections/xyz).
+       * @principle Enforces document ownership within a user's private subcollection.
+       */
+      match /collections/{collectionId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId) && isCreatingValidOwnedDocument(userId);
+        allow update: if isExistingOwner(userId) && isUpdatingValidOwnedDocument();
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description Manages meal plans created by a user.
+       * @path /users/{userId}/mealPlans/{mealPlanId}
+       * @allow (get, list, create, update, delete) A user can manage their own meal plans. (e.g., auth.uid == 'user123' operates on /users/user123/mealPlans/abc).
+       * @deny (get, list, create, update, delete) A user cannot access another user's meal plans. (e.g., auth.uid == 'user123' operates on /users/user456/mealPlans/xyz).
+       * @principle Enforces document ownership within a user's private subcollection.
+       */
+      match /mealPlans/{mealPlanId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId) && isCreatingValidOwnedDocument(userId);
+        allow update: if isExistingOwner(userId) && isUpdatingValidOwnedDocument();
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description Manages shopping lists generated by a user.
+       * @path /users/{userId}/shoppingLists/{shoppingListId}
+       * @allow (get, list, create, update, delete) A user can manage their own shopping lists. (e.g., auth.uid == 'user123' operates on /users/user123/shoppingLists/abc).
+       * @deny (get, list, create, update, delete) A user cannot access another user's shopping lists. (e.g., auth.uid == 'user123' operates on /users/user456/shoppingLists/xyz).
+       * @principle Enforces document ownership within a user's private subcollection.
+       */
+      match /shoppingLists/{shoppingListId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId) && isCreatingValidOwnedDocument(userId);
+        allow update: if isExistingOwner(userId) && isUpdatingValidOwnedDocument();
+        allow delete: if isExistingOwner(userId);
+      }
+    }
+  }
+}

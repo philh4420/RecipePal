@@ -1,0 +1,300 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user within the RecipePal application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the User entity."
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address.",
+          "format": "email"
+        },
+        "username": {
+          "type": "string",
+          "description": "User's username."
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "username"
+      ]
+    },
+    "Recipe": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Recipe",
+      "type": "object",
+      "description": "Represents a recipe, either imported or manually entered.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Recipe entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Recipe)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the recipe."
+        },
+        "ingredients": {
+          "type": "string",
+          "description": "Ingredients for the recipe."
+        },
+        "instructions": {
+          "type": "string",
+          "description": "Instructions for preparing the recipe."
+        },
+        "url": {
+          "type": "string",
+          "description": "URL where the recipe was imported from (if applicable).",
+          "format": "uri"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the recipe's image (if available).",
+          "format": "uri"
+        },
+        "prepTime": {
+          "type": "number",
+          "description": "Preparation time in minutes."
+        },
+        "cookTime": {
+          "type": "number",
+          "description": "Cooking time in minutes."
+        },
+        "servings": {
+          "type": "number",
+          "description": "Number of servings the recipe makes."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "name",
+        "ingredients",
+        "instructions"
+      ]
+    },
+    "Collection": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Collection",
+      "type": "object",
+      "description": "Represents a custom collection of recipes.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Collection entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Collection)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the collection."
+        },
+        "recipeIds": {
+          "type": "array",
+          "description": "References to Recipes in the collection. (Relationship: Collection N:N Recipe)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "name",
+        "recipeIds"
+      ]
+    },
+    "MealPlan": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "MealPlan",
+      "type": "object",
+      "description": "Represents a meal plan for a specific date.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the MealPlan entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N MealPlan)"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date of the meal plan.",
+          "format": "date-time"
+        },
+        "recipeIds": {
+          "type": "array",
+          "description": "References to Recipes in the meal plan. (Relationship: MealPlan N:N Recipe)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "date",
+        "recipeIds"
+      ]
+    },
+    "ShoppingList": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ShoppingList",
+      "type": "object",
+      "description": "Represents a shopping list generated from meal plans.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ShoppingList entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N ShoppingList)"
+        },
+        "mealPlanIds": {
+          "type": "array",
+          "description": "References to MealPlans used to generate this shopping list. (Relationship: ShoppingList 1:N MealPlan)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "items": {
+          "type": "string",
+          "description": "Consolidated list of ingredients needed, potentially with quantities."
+        },
+        "generatedDate": {
+          "type": "string",
+          "description": "Date when the shopping list was generated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "mealPlanIds",
+        "items",
+        "generatedDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profiles. Only the user can read/write their own profile.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/recipes/{recipeId}",
+        "definition": {
+          "entityName": "Recipe",
+          "schema": {
+            "$ref": "#/backend/entities/Recipe"
+          },
+          "description": "Stores recipes owned by a specific user.  Only the user can read/write their own recipes.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            },
+            {
+              "name": "recipeId",
+              "description": "The unique identifier of the recipe."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/collections/{collectionId}",
+        "definition": {
+          "entityName": "Collection",
+          "schema": {
+            "$ref": "#/backend/entities/Collection"
+          },
+          "description": "Stores recipe collections owned by a specific user. Only the user can read/write their own collections.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            },
+            {
+              "name": "collectionId",
+              "description": "The unique identifier of the collection."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/mealPlans/{mealPlanId}",
+        "definition": {
+          "entityName": "MealPlan",
+          "schema": {
+            "$ref": "#/backend/entities/MealPlan"
+          },
+          "description": "Stores meal plans created by a specific user. Only the user can read/write their own meal plans.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            },
+            {
+              "name": "mealPlanId",
+              "description": "The unique identifier of the meal plan."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/shoppingLists/{shoppingListId}",
+        "definition": {
+          "entityName": "ShoppingList",
+          "schema": {
+            "$ref": "#/backend/entities/ShoppingList"
+          },
+          "description": "Stores shopping lists generated by a specific user. Only the user can read/write their own shopping lists.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            },
+            {
+              "name": "shoppingListId",
+              "description": "The unique identifier of the shopping list."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to ensure security, scalability, and ease of debugging, adhering to the core design principles of Authorization Independence, Clarity of Intent, DBAC (Database-Based Access Control), and QAPs (Rules are not Filters). It leverages Structural Segregation (homogeneous security posture) by placing different data types into separate collections based on their access requirements and uses path-based ownership for private user data.\n\nRecipes, Collections, MealPlans, and ShoppingLists are all stored under the respective `/users/{userId}` subcollections. This approach provides straightforward ownership and eliminates the need for complex `get()` calls in security rules, thereby ensuring Authorization Independence and atomic operations. Each document inherits its authorization context directly from its path, ensuring that only the owning user can access it. This also facilitates secure `list` operations (QAPs).\n\nSince this design uses path-based ownership and no shared data it does not use membership maps. If the app evolves to support shared data then membership maps can be added and will follow the denormalization strategy."
+  }
+}

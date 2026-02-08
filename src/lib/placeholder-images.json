@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "1",
+      "description": "A close-up shot of spaghetti carbonara in a white bowl.",
+      "imageUrl": "https://images.unsplash.com/photo-1735640268811-9c614c08b0dc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYXN0YSUyMGNhcmJvbmFyYXxlbnwwfHx8fDE3NzA1ODIzNDV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pasta carbonara"
+    },
+    {
+      "id": "2",
+      "description": "A vibrant quinoa salad with avocado and tomatoes.",
+      "imageUrl": "https://images.unsplash.com/photo-1615865417491-9941019fbc00?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxxdWlub2ElMjBzYWxhZHxlbnwwfHx8fDE3NzA1ODIzNDV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "quinoa salad"
+    },
+    {
+      "id": "3",
+      "description": "A hearty beef stew in a rustic bowl.",
+      "imageUrl": "https://images.unsplash.com/photo-1608500218882-986df81d55fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxiZWVmJTIwc3Rld3xlbnwwfHx8fDE3NzA1NjM5MzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "beef stew"
+    },
+    {
+      "id": "4",
+      "description": "Lemon herb chicken and broccoli on a sheet pan.",
+      "imageUrl": "https://images.unsplash.com/photo-1682991136736-a2b44623eeba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzaGVldCUyMHBhbiUyMGNoaWNrZW58ZW58MHx8fHwxNzcwNTgyMzQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sheet pan chicken"
+    },
+    {
+      "id": "5",
+      "description": "Crispy bruschetta with fresh tomatoes and basil.",
+      "imageUrl": "https://images.unsplash.com/photo-1630081015934-d84dfedb84cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx0b21hdG8lMjBicnVzY2hldHRhfGVufDB8fHx8MTc3MDU3NTY2OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tomato bruschetta"
+    },
+    {
+      "id": "6",
+      "description": "A bowl of creamy tomato soup with a swirl of cream.",
+      "imageUrl": "https://images.unsplash.com/photo-1620418029653-f708dd37096a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx0b21hdG8lMjBzb3VwfGVufDB8fHx8MTc3MDU1NzgwOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tomato soup"
+    }
+  ]
 }

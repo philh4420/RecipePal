@@ -21,7 +21,6 @@ import { Button } from '@/components/ui/button';
 import { useUser } from '@/firebase';
 import React from 'react';
 import { UserButton } from '@/components/user-button';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Loader } from 'lucide-react';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

@@ -12,11 +12,10 @@ import { useToast } from '@/hooks/use-toast';
 import { addRecipeToMealPlan } from '@/lib/meal-plan';
 import type { Recipe } from '@/lib/types';
 import { useFirestore, useUser } from '@/firebase';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
 import { Button } from './ui/button';
+import { RecipeImage } from '@/components/recipe-image';
 
 interface AddMealModalProps {
   open: boolean;
@@ -63,9 +62,9 @@ export function AddMealModal({ open, onOpenChange, day, mealType, recipes }: Add
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl">
+      <DialogContent className="border-border/80 bg-card/95 sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Add a recipe to your {mealType}</DialogTitle>
+          <DialogTitle className="font-headline text-3xl tracking-tight">Add a recipe to your {mealType}</DialogTitle>
           <DialogDescription>
             Select one of your saved recipes to add to the meal plan.
           </DialogDescription>
@@ -75,17 +74,17 @@ export function AddMealModal({ open, onOpenChange, day, mealType, recipes }: Add
             {recipes.map((recipe) => (
               <div
                 key={recipe.id}
-                className="relative rounded-lg overflow-hidden border cursor-pointer group"
+                className="group relative cursor-pointer overflow-hidden rounded-xl border border-border/70"
                 onClick={() => !isSaving && handleSelectRecipe(recipe)}
               >
-                <Image
-                  src={recipe.imageUrl || PlaceHolderImages[0].imageUrl}
+                <RecipeImage
+                  src={recipe.imageUrl}
                   alt={recipe.name}
                   width={200}
                   height={120}
                   className="w-full h-28 object-cover"
                 />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/45 opacity-0 transition-all group-hover:opacity-100">
                     {isSaving === recipe.id ? (
                         <Loader className="h-6 w-6 text-white animate-spin" />
                     ) : (
@@ -93,7 +92,7 @@ export function AddMealModal({ open, onOpenChange, day, mealType, recipes }: Add
                     )}
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/70 to-transparent">
-                  <h3 className="text-white text-sm font-semibold truncate">{recipe.name}</h3>
+                  <h3 className="truncate text-sm font-semibold text-white">{recipe.name}</h3>
                 </div>
               </div>
             ))}

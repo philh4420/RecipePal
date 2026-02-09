@@ -54,12 +54,12 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
-       <Card className="w-full max-w-md">
+       <Card className="w-full max-w-md border-border/70 bg-card/95 shadow-[0_20px_40px_rgba(54,42,30,0.14)]">
         <CardHeader className="text-center">
            <div className="flex justify-center mb-4">
-            <Logo className="h-10 w-10" />
+            <Logo className="h-10 w-10 text-primary" />
           </div>
-          <CardTitle className="text-2xl">Welcome to RecipePal</CardTitle>
+          <CardTitle className="font-headline text-3xl tracking-tight">Welcome to RecipePal</CardTitle>
           <CardDescription>
             Sign in to save your recipes and plan your meals.
           </CardDescription>

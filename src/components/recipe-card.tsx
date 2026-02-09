@@ -2,7 +2,6 @@
 
 import type { Recipe } from '@/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
-import Image from 'next/image';
 import { Button } from './ui/button';
 import { MoreHorizontal, Loader, Clock, ChefHat } from 'lucide-react';
 import {
@@ -22,13 +21,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 import React from 'react';
 import { AddRecipeModal } from './add-recipe-modal';
 import { useFirestore, useUser } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { deleteRecipe } from '@/lib/recipes';
+import { RecipeImage } from '@/components/recipe-image';
 
 
 interface RecipeCardProps {
@@ -36,7 +35,6 @@ interface RecipeCardProps {
 }
 
 export function RecipeCard({ recipe }: RecipeCardProps) {
-  const imageUrl = recipe.imageUrl || PlaceHolderImages[0].imageUrl;
   const [editModalOpen, setEditModalOpen] = React.useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
@@ -44,6 +42,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
   const firestore = useFirestore();
   const { user } = useUser();
   const { toast } = useToast();
+  const recipeName = typeof recipe.name === 'string' && recipe.name.trim() ? recipe.name : 'Untitled Recipe';
 
   const handleDeleteConfirm = () => {
     if (!firestore || !user) {
@@ -59,7 +58,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
       deleteRecipe(firestore, user.uid, recipe.id);
       toast({
         title: 'Recipe Deleted',
-        description: `"${recipe.name}" has been removed from your collection.`,
+        description: `"${recipeName}" has been removed from your collection.`,
       });
       setDeleteDialogOpen(false);
     } catch (error) {
@@ -76,22 +75,26 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
 
   return (
     <>
-      <Card className="h-full overflow-hidden flex flex-col group shadow-sm hover:shadow-primary/20 transition-all duration-300 bg-card border-border/20 hover:border-primary/30">
+      <Card className="group flex h-full flex-col overflow-hidden border-border/70 bg-card/95 transition-all duration-300 hover:-translate-y-1 hover:border-primary/35 hover:shadow-[0_18px_36px_rgba(64,53,40,0.16)]">
         <div className="relative">
-           <Link href={`/recipes/${recipe.id}`} className="absolute inset-0 z-10" aria-label={`View ${recipe.name}`}>
+           <Link href={`/recipes/${recipe.id}`} className="absolute inset-0 z-10" aria-label={`View ${recipeName}`}>
             <span className="sr-only">View Recipe</span>
            </Link>
-           <Image
-              src={imageUrl}
-              alt={recipe.name}
+           <RecipeImage
+              src={recipe.imageUrl}
+              alt={recipeName}
               width={400}
               height={225}
               className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
+           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
+           <div className="absolute left-3 top-3 rounded-full bg-black/35 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm">
+            Recipe
+           </div>
            <div className="absolute top-3 right-3 z-20">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-background/60 hover:bg-background backdrop-blur-sm shadow-md">
+                <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-card/75 hover:bg-card backdrop-blur-sm shadow-md">
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -107,23 +110,23 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
             </DropdownMenu>
           </div>
         </div>
-        <CardContent className="p-5 flex-grow flex flex-col">
-          <h3 className="text-lg font-semibold leading-tight line-clamp-2 text-foreground flex-grow">
+        <CardContent className="flex flex-grow flex-col p-5">
+          <h3 className="flex-grow font-headline text-2xl font-semibold leading-tight text-foreground line-clamp-2">
              <Link href={`/recipes/${recipe.id}`} className="hover:text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-ring rounded-sm">
-              {recipe.name}
+              {recipeName}
              </Link>
           </h3>
         
           {(recipe.prepTime || recipe.cookTime) && (
-            <div className="pt-4 mt-auto text-sm text-muted-foreground flex items-center gap-4">
+            <div className="mt-auto flex items-center gap-3 pt-4 text-sm text-muted-foreground">
                 {recipe.prepTime && recipe.prepTime > 0 ? (
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1">
                     <Clock className="h-4 w-4" />
                     <span>{recipe.prepTime} min</span>
                   </div>
                 ) : null}
                 {recipe.cookTime && recipe.cookTime > 0 ? (
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1">
                     <ChefHat className="h-4 w-4" />
                     <span>{recipe.cookTime} min</span>
                   </div>
@@ -140,7 +143,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure you want to delete this recipe?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the recipe for "{recipe.name}".
+              This action cannot be undone. This will permanently delete the recipe for "{recipeName}".
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

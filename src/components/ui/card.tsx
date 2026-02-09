@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 const Card = ({ className, ...props }: React.ComponentPropsWithRef<"div">) => (
   <div
     className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
+      "rounded-2xl border border-border/80 bg-card text-card-foreground shadow-[0_10px_30px_rgba(53,42,31,0.08)]",
       className
     )}
     {...props}

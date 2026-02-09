@@ -105,7 +105,7 @@ export function AddRecipeModal({ recipe, open, onOpenChange }: RecipeModalProps)
     },
   });
 
-  const handleManualSubmit = (values: z.infer<typeof manualFormSchema>) => {
+  const handleManualSubmit = async (values: z.infer<typeof manualFormSchema>) => {
     if (!firestore || !user) {
       toast({
         variant: 'destructive',
@@ -124,7 +124,7 @@ export function AddRecipeModal({ recipe, open, onOpenChange }: RecipeModalProps)
           description: 'Your recipe has been updated successfully.',
         });
       } else {
-        addRecipe(firestore, user.uid, values);
+        await addRecipe(firestore, user.uid, values);
         toast({
           title: 'Recipe Added!',
           description: 'Your new recipe has been saved successfully.',
@@ -167,8 +167,19 @@ export function AddRecipeModal({ recipe, open, onOpenChange }: RecipeModalProps)
       return;
     }
 
+    if (!result.recipe.imageUrl) {
+      toast({
+        variant: 'destructive',
+        title: 'Import Failed',
+        description: 'AI image generation failed for this recipe. Please try another URL.',
+      });
+      setIsImporting(false);
+      setIsSaving(false);
+      return;
+    }
+
     try {
-      addRecipe(firestore, user.uid, { ...result.recipe, url: values.url });
+      await addRecipe(firestore, user.uid, { ...result.recipe, url: values.url }, { usePlaceholder: false });
       toast({
         title: 'Recipe Imported!',
         description: `${result.recipe.name} has been added to your collection.`,
@@ -189,14 +200,14 @@ export function AddRecipeModal({ recipe, open, onOpenChange }: RecipeModalProps)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[625px]">
+      <DialogContent className="max-h-[88vh] overflow-hidden border-border/80 bg-card/95 sm:max-w-[720px]">
         <DialogHeader>
-          <DialogTitle>{isEditMode ? 'Edit Recipe' : 'Add a New Recipe'}</DialogTitle>
+          <DialogTitle className="font-headline text-3xl tracking-tight">{isEditMode ? 'Edit Recipe' : 'Add a New Recipe'}</DialogTitle>
           <DialogDescription>
             {isEditMode ? 'Make changes to your recipe below.' : 'Import a recipe from a URL or enter it manually.'}
           </DialogDescription>
         </DialogHeader>
-        <Tabs defaultValue="manual" value={isEditMode ? 'manual' : undefined}>
+        <Tabs defaultValue="manual" value={isEditMode ? 'manual' : undefined} className="space-y-2">
           <TabsList className={cn('grid w-full', isEditMode ? 'grid-cols-1' : 'grid-cols-2')}>
             {!isEditMode && <TabsTrigger value="import">Import from URL</TabsTrigger>}
             <TabsTrigger value="manual">{isEditMode ? 'Recipe Details' : 'Manual Entry'}</TabsTrigger>
@@ -237,7 +248,7 @@ export function AddRecipeModal({ recipe, open, onOpenChange }: RecipeModalProps)
           }
           <TabsContent value="manual">
             <Form {...manualForm}>
-              <form onSubmit={manualForm.handleSubmit(handleManualSubmit)} className="space-y-4 py-4 max-h-[60vh] overflow-y-auto pr-2">
+              <form onSubmit={manualForm.handleSubmit(handleManualSubmit)} className="space-y-4 overflow-y-auto py-4 pr-2 max-h-[62vh]">
                 <FormField
                   control={manualForm.control}
                   name="name"

@@ -22,7 +22,16 @@ export interface RecipeData {
  * @param userId The ID of the current user.
  * @param recipeData The recipe data from the form or import.
  */
-export function addRecipe(firestore: Firestore, userId: string, recipeData: RecipeData) {
+type AddRecipeOptions = {
+  usePlaceholder?: boolean;
+};
+
+export function addRecipe(
+  firestore: Firestore,
+  userId: string,
+  recipeData: RecipeData,
+  options: AddRecipeOptions = {}
+) {
   const recipesCollectionRef = collection(firestore, `users/${userId}/recipes`);
 
   const ingredientsArray = Array.isArray(recipeData.ingredients)
@@ -30,21 +39,26 @@ export function addRecipe(firestore: Firestore, userId: string, recipeData: Reci
     : recipeData.ingredients.split('\n').filter(line => line.trim() !== '');
 
   const randomImage = PlaceHolderImages[Math.floor(Math.random() * PlaceHolderImages.length)];
+  const usePlaceholder = options.usePlaceholder ?? true;
+  const resolvedImageUrl = recipeData.imageUrl || (usePlaceholder ? randomImage.imageUrl : undefined);
 
-  const newRecipe = {
+  const newRecipe: Record<string, any> = {
     userId: userId,
     name: recipeData.name,
     servings: recipeData.servings || 1,
     ingredients: ingredientsArray,
     instructions: recipeData.instructions,
-    imageUrl: recipeData.imageUrl || randomImage.imageUrl,
     prepTime: recipeData.prepTime || 0,
     cookTime: recipeData.cookTime || 0,
     url: recipeData.url || '',
   };
 
-  // Use the non-blocking fire-and-forget update
-  addDocumentNonBlocking(recipesCollectionRef, newRecipe);
+  if (resolvedImageUrl) {
+    newRecipe.imageUrl = resolvedImageUrl;
+  }
+
+  // Returns a promise so callers can optionally await and handle write failures.
+  return addDocumentNonBlocking(recipesCollectionRef, newRecipe);
 }
 
 

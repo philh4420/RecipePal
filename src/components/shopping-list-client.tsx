@@ -119,27 +119,32 @@ export function ShoppingListClient() {
   const isLoading = isPending || (isLoadingMealPlans && !mealPlanDocs) || (isLoadingRecipes && !recipes);
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex-1">
-          <h1 className="text-3xl font-bold tracking-tight">Shopping List</h1>
-          <p className="text-muted-foreground">
-            Generate an AI-powered, consolidated list of ingredients from your meal plan for the week.
-          </p>
+    <div className="space-y-8">
+      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/90 p-6 shadow-[0_18px_36px_rgba(51,39,27,0.08)] sm:p-8">
+        <div className="pointer-events-none absolute -left-20 -top-20 h-52 w-52 rounded-full bg-primary/12 blur-3xl" />
+        <div className="pointer-events-none absolute -right-16 -bottom-16 h-52 w-52 rounded-full bg-accent/14 blur-3xl" />
+        <div className="relative flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+          <div className="flex-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">Weekly Prep</p>
+            <h1 className="mt-3 font-headline text-4xl font-semibold tracking-tight">Shopping List</h1>
+            <p className="mt-2 text-muted-foreground">
+              Generate a consolidated ingredient list from your meal plan and check items off as you shop.
+            </p>
+          </div>
+          <Button onClick={handleGenerate} disabled={isLoading} size="lg" className="rounded-xl px-6">
+            {isPending ? (
+              <Loader className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Sparkles className="mr-2 h-4 w-4" />
+            )}
+            Generate with AI
+          </Button>
         </div>
-        <Button onClick={handleGenerate} disabled={isLoading} size="lg">
-          {isPending ? (
-            <Loader className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Sparkles className="mr-2 h-4 w-4" />
-          )}
-          Generate with AI
-        </Button>
       </div>
 
-      <Card>
+      <Card className="border-border/70 bg-card/90">
         <CardHeader>
-          <CardTitle>Your List</CardTitle>
+          <CardTitle className="font-headline text-3xl">Your List</CardTitle>
         </CardHeader>
         <CardContent>
           {isPending ? (

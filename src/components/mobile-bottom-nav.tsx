@@ -28,8 +28,8 @@ export function MobileBottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 z-50 w-full h-16 bg-card border-t border-border md:hidden">
-      <div className="grid h-full max-w-lg grid-cols-3 mx-auto">
+    <nav className="fixed bottom-0 left-0 z-50 h-16 w-full border-t border-border/70 bg-card/95 shadow-[0_-8px_22px_rgba(44,38,30,0.08)] backdrop-blur md:hidden">
+      <div className="mx-auto grid h-full max-w-lg grid-cols-3">
         {menuItems.map((item) => {
           const isActive = pathname.startsWith(item.href);
           return (
@@ -37,11 +37,13 @@ export function MobileBottomNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                'inline-flex flex-col items-center justify-center px-5 font-medium hover:bg-muted group',
-                isActive ? 'text-primary' : 'text-muted-foreground'
+                'inline-flex flex-col items-center justify-center rounded-xl px-5 font-medium transition-colors',
+                isActive
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
               )}
             >
-              <item.icon className="w-5 h-5 mb-1" />
+              <item.icon className="mb-1 h-5 w-5" />
               <span className="text-xs">{item.label}</span>
             </Link>
           );

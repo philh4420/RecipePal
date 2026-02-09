@@ -3,11 +3,10 @@
 import { useDoc, useFirestore, useUser, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { useParams } from 'next/navigation';
-import Image from 'next/image';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Clock, Users, ChefHat } from 'lucide-react';
 import type { Recipe } from '@/lib/types';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { RecipeImage } from '@/components/recipe-image';
 
 export default function RecipeDetailsPage() {
   const { user } = useUser();
@@ -54,45 +53,44 @@ export default function RecipeDetailsPage() {
       </div>
     );
   }
+  const recipeName = typeof recipe.name === 'string' && recipe.name.trim() ? recipe.name : 'Untitled Recipe';
   
-  const imageUrl = recipe.imageUrl || PlaceHolderImages[0].imageUrl;
-
   return (
-    <div className="max-w-4xl mx-auto space-y-8 pb-12">
-      <div>
-        <h1 className="text-4xl font-bold tracking-tight mb-2">{recipe.name}</h1>
+    <div className="mx-auto max-w-5xl space-y-8 pb-12">
+      <div className="rounded-3xl border border-border/70 bg-card/90 p-6 shadow-[0_18px_36px_rgba(51,39,27,0.08)] sm:p-8">
+        <h1 className="font-headline text-4xl font-semibold tracking-tight sm:text-5xl">{recipeName}</h1>
         {recipe.url && (
-            <a href={recipe.url} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline break-all">
+            <a href={recipe.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block break-all text-sm text-primary hover:underline">
                 Original recipe source
             </a>
         )}
       </div>
 
-      <div className="relative h-96 w-full overflow-hidden rounded-lg shadow-xl">
-         <Image
-            src={imageUrl}
-            alt={recipe.name}
+      <div className="relative h-96 w-full overflow-hidden rounded-3xl border border-border/60 shadow-2xl shadow-black/20">
+         <RecipeImage
+            src={recipe.imageUrl}
+            alt={recipeName}
             fill
             sizes="(max-width: 1024px) 100vw, 1024px"
             className="object-cover"
         />
       </div>
 
-       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-muted-foreground">
+       <div className="flex flex-wrap items-center gap-3 text-muted-foreground">
           {recipe.prepTime && recipe.prepTime > 0 ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 rounded-full bg-muted px-3 py-1.5">
               <Clock className="h-5 w-5" />
               <span>Prep: {recipe.prepTime} mins</span>
             </div>
           ) : null}
           {recipe.cookTime && recipe.cookTime > 0 ? (
-             <div className="flex items-center gap-2">
+             <div className="flex items-center gap-2 rounded-full bg-muted px-3 py-1.5">
               <ChefHat className="h-5 w-5" />
               <span>Cook: {recipe.cookTime} mins</span>
             </div>
           ) : null}
           {recipe.servings && recipe.servings > 0 ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 rounded-full bg-muted px-3 py-1.5">
               <Users className="h-5 w-5" />
               <span>Serves {recipe.servings}</span>
             </div>
@@ -100,17 +98,17 @@ export default function RecipeDetailsPage() {
         </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-1">
-          <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
-          <ul className="space-y-2.5 list-disc list-inside bg-card p-4 rounded-lg border shadow-sm">
+        <div className="lg:col-span-1 rounded-2xl border border-border/70 bg-card/90 p-5 shadow-[0_10px_24px_rgba(49,39,30,0.09)]">
+          <h2 className="mb-4 font-headline text-3xl font-semibold">Ingredients</h2>
+          <ul className="list-disc list-inside space-y-2.5">
             {recipe.ingredients.map((ingredient, index) => (
               <li key={index} className="ml-2">{ingredient}</li>
             ))}
           </ul>
         </div>
-        <div className="lg:col-span-2">
-          <h2 className="text-2xl font-bold mb-4">Instructions</h2>
-          <div className="prose max-w-none text-base whitespace-pre-line leading-relaxed">
+        <div className="lg:col-span-2 rounded-2xl border border-border/70 bg-card/90 p-6 shadow-[0_10px_24px_rgba(49,39,30,0.09)]">
+          <h2 className="mb-4 font-headline text-3xl font-semibold">Instructions</h2>
+          <div className="prose max-w-none whitespace-pre-line text-base leading-relaxed">
             {recipe.instructions}
           </div>
         </div>

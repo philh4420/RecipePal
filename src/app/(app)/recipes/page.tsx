@@ -5,7 +5,7 @@ import { RecipeCard } from '@/components/recipe-card';
 import { Input } from '@/components/ui/input';
 import { useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
-import { Loader, Search, BookOpen, PlusCircle } from 'lucide-react';
+import { Search, BookOpen, PlusCircle } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import React from 'react';
 import { Button } from '@/components/ui/button';
@@ -27,39 +27,51 @@ export default function RecipesPage() {
   
   const filteredRecipes = React.useMemo(() => {
     if (!recipes) return [];
-    return recipes.filter(recipe =>
-      recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+    return recipes.filter((recipe): recipe is Recipe => {
+      if (!recipe || typeof recipe !== 'object') return false;
+      const recipeName = typeof recipe.name === 'string' ? recipe.name.toLowerCase() : '';
+      return recipeName.includes(normalizedSearch);
+    });
   }, [recipes, searchTerm]);
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">My Recipes</h1>
-          <p className="mt-2 text-lg text-muted-foreground">
-            Your personal cookbook. Add, search, and manage your recipes.
-          </p>
-        </div>
-        <Button 
-            onClick={() => setAddModalOpen(true)} 
-            size="lg" 
-            className="bg-primary text-primary-foreground shadow-lg hover:shadow-primary/50 transition-shadow">
+    <div className="space-y-10">
+      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/90 p-6 shadow-[0_18px_36px_rgba(51,39,27,0.08)] sm:p-8">
+        <div className="pointer-events-none absolute -left-24 top-0 h-60 w-60 rounded-full bg-primary/14 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-60 w-60 rounded-full bg-accent/14 blur-3xl" />
+        <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">My Kitchen Notebook</p>
+            <h1 className="mt-3 font-headline text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">My Recipes</h1>
+            <p className="mt-3 max-w-xl text-lg text-muted-foreground">
+              Build your personal cookbook, import from the web, and keep everything ready for meal planning.
+            </p>
+            <p className="mt-4 text-sm text-muted-foreground">
+              {filteredRecipes.length} recipe{filteredRecipes.length === 1 ? '' : 's'} in your collection
+            </p>
+          </div>
+          <Button
+            onClick={() => setAddModalOpen(true)}
+            size="lg"
+            className="self-start rounded-xl px-6"
+          >
             <PlusCircle className="mr-2 h-5 w-5" />
             Add Recipe
-        </Button>
-        <AddRecipeModal open={addModalOpen} onOpenChange={setAddModalOpen} />
-      </div>
+          </Button>
+        </div>
 
-      <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-        <Input 
-          placeholder="Search recipes by name..." 
-          className="pl-12 py-6 text-base bg-card border-border/50" 
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        <div className="relative mt-6">
+          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search recipes by name..."
+            className="h-12 rounded-xl border-border/70 bg-background/80 pl-12 text-base"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
       </div>
+      <AddRecipeModal open={addModalOpen} onOpenChange={setAddModalOpen} />
 
       {isLoading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -76,7 +88,7 @@ export default function RecipesPage() {
       )}
 
       {!isLoading && filteredRecipes.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredRecipes.map((recipe) => (
             <RecipeCard key={recipe.id} recipe={recipe} />
           ))}

@@ -6,16 +6,15 @@ import { Plus, X } from 'lucide-react';
 import { ScrollArea, ScrollBar } from './ui/scroll-area';
 import type { Recipe, MealPlanDocument, DayPlan, Meal } from '@/lib/types';
 import { addDays, format, startOfWeek, endOfWeek } from 'date-fns';
-import Image from 'next/image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
 import { collection, query, where, documentId } from 'firebase/firestore';
 import React, { useState, useMemo, useEffect } from 'react';
 import { AddMealModal } from './add-meal-modal';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Skeleton } from './ui/skeleton';
 import { removeRecipeFromMealPlan } from '@/lib/meal-plan';
 import { useToast } from '@/hooks/use-toast';
+import { RecipeImage } from '@/components/recipe-image';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,10 +28,10 @@ import {
 } from "@/components/ui/alert-dialog"
 
 const MealCard = ({ meal, onRemove }: { meal: Meal; onRemove: () => void }) => (
-  <Card className="group relative overflow-hidden transition-shadow hover:shadow-lg">
+  <Card className="group relative overflow-hidden border-border/70 transition-all hover:-translate-y-0.5 hover:shadow-xl">
     <CardContent className="p-0">
-      <Image
-        src={meal.recipe.imageUrl || PlaceHolderImages[0].imageUrl}
+      <RecipeImage
+        src={meal.recipe.imageUrl}
         alt={meal.recipe.name}
         width={300}
         height={150}
@@ -75,9 +74,9 @@ const DayMeals = ({ day, dayPlan, onAdd, onRemove }: { day: Date; dayPlan: DayPl
             {mealTypes.map((mealType) => {
             const meal = dayPlan[mealType.key];
             return (
-                <Card key={mealType.name}>
+                <Card key={mealType.name} className="border-border/70 bg-card/90">
                 <CardHeader className="p-3">
-                    <CardTitle className="text-sm font-medium">
+                    <CardTitle className="font-headline text-lg font-semibold">
                     {mealType.name}
                     </CardTitle>
                 </CardHeader>
@@ -85,7 +84,7 @@ const DayMeals = ({ day, dayPlan, onAdd, onRemove }: { day: Date; dayPlan: DayPl
                     {meal ? (
                     <MealCard meal={meal} onRemove={() => onRemove(day, mealType.key)} />
                     ) : (
-                    <Button variant="outline" className="w-full h-24 border-dashed" onClick={() => onAdd(day, mealType.name)}>
+                    <Button variant="outline" className="h-24 w-full border-dashed border-border/70 bg-background/70" onClick={() => onAdd(day, mealType.name)}>
                         <Plus className="h-5 w-5 text-muted-foreground" />
                     </Button>
                     )}
@@ -220,17 +219,27 @@ export function MealPlanCalendar() {
         mealType={modalState.mealType}
         recipes={recipes || []}
       />
-      <h1 className="text-3xl font-bold tracking-tight">Meal Plan</h1>
+      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/90 p-6 shadow-[0_18px_36px_rgba(51,39,27,0.08)] sm:p-8">
+        <div className="pointer-events-none absolute -left-24 top-0 h-56 w-56 rounded-full bg-primary/12 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-56 w-56 rounded-full bg-accent/12 blur-3xl" />
+        <div className="relative">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">Weekly Rhythm</p>
+          <h1 className="mt-3 font-headline text-4xl font-semibold tracking-tight">Meal Plan</h1>
+          <p className="mt-2 text-muted-foreground">
+            Plan breakfast, lunch, and dinner for each day and keep your week organized.
+          </p>
+        </div>
+      </div>
 
       {/* Desktop View */}
       <div className="hidden md:block">
-        <ScrollArea>
+        <ScrollArea className="rounded-2xl border border-border/70 bg-card/85 p-4 shadow-[0_14px_30px_rgba(58,45,34,0.1)]">
             {isLoading ? <CalendarSkeleton /> : (
                 <div className="grid grid-cols-7 gap-4 min-w-[800px]">
                 {weekDays.map((day, index) => (
                     <div key={day.toISOString()} className="space-y-4">
-                    <div className="text-center p-2 rounded-md">
-                        <p className="font-bold text-lg">{format(day, 'E')}</p>
+                    <div className="rounded-xl bg-muted/65 p-2 text-center">
+                        <p className="font-headline text-2xl font-semibold">{format(day, 'E')}</p>
                         <p className="text-sm text-muted-foreground">{format(day, 'd')}</p>
                     </div>
                     <DayMeals day={day} dayPlan={weekPlan[index]} onAdd={handleAddMealClick} onRemove={handleRemoveMeal} />
@@ -246,9 +255,9 @@ export function MealPlanCalendar() {
       <div className="block md:hidden">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <ScrollArea className="w-full whitespace-nowrap">
-                <TabsList className="p-1 h-auto justify-start">
+                <TabsList className="h-auto justify-start rounded-xl p-1">
                     {weekDays.map(day => (
-                        <TabsTrigger key={day.toISOString()} value={format(day, 'E')} className="flex-col h-auto py-2 px-4 data-[state=active]:shadow-md">
+                        <TabsTrigger key={day.toISOString()} value={format(day, 'E')} className="h-auto flex-col px-4 py-2 data-[state=active]:shadow-md">
                             <span className="text-xs font-medium">{format(day, 'E')}</span>
                             <span className="text-base font-bold mt-1">{format(day, 'd')}</span>
                         </TabsTrigger>

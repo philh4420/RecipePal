@@ -10,7 +10,7 @@ import Image from 'next/image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useCollection, useFirestore, useUser, useMemoFirebase } from '@/firebase';
 import { collection, query, where, documentId } from 'firebase/firestore';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { AddMealModal } from './add-meal-modal';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Skeleton } from './ui/skeleton';
@@ -128,13 +128,19 @@ export function MealPlanCalendar() {
   const firestore = useFirestore();
   const { toast } = useToast();
   const weekStartsOn = 1; // Monday
-  const [currentDate, setCurrentDate] = useState(new Date());
+  
+  const [currentDate, setCurrentDate] = useState<Date | null>(null);
+  const [activeTab, setActiveTab] = useState('');
 
-  const startOfWeekDate = startOfWeek(currentDate, { weekStartsOn });
-  const endOfWeekDate = endOfWeek(currentDate, { weekStartsOn });
+  useEffect(() => {
+    const now = new Date();
+    setCurrentDate(now);
+    setActiveTab(format(now, 'E'));
+  }, []);
 
-  const weekDays = Array.from({ length: 7 }).map((_, i) => addDays(startOfWeekDate, i));
-  const todayDayString = format(new Date(), 'E');
+  const startOfWeekDate = useMemo(() => currentDate ? startOfWeek(currentDate, { weekStartsOn }) : null, [currentDate]);
+  const endOfWeekDate = useMemo(() => currentDate ? endOfWeek(currentDate, { weekStartsOn }) : null, [currentDate]);
+  const weekDays = useMemo(() => startOfWeekDate ? Array.from({ length: 7 }).map((_, i) => addDays(startOfWeekDate, i)) : [], [startOfWeekDate]);
 
   const [modalState, setModalState] = useState<{open: boolean, day: Date | null, mealType: string | null}>({open: false, day: null, mealType: null});
 
@@ -145,7 +151,7 @@ export function MealPlanCalendar() {
   const { data: recipes, isLoading: isLoadingRecipes } = useCollection<Recipe>(recipesQuery);
 
   const mealPlansQuery = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
+    if (!user || !firestore || !startOfWeekDate || !endOfWeekDate) return null;
     return query(
       collection(firestore, 'users', user.uid, 'mealPlans'),
       where(documentId(), '>=', format(startOfWeekDate, 'yyyy-MM-dd')),
@@ -203,7 +209,7 @@ export function MealPlanCalendar() {
       }
   }
 
-  const isLoading = isLoadingRecipes || isLoadingMealPlans;
+  const isLoading = isLoadingRecipes || isLoadingMealPlans || !currentDate;
 
   return (
     <div className="flex-1 space-y-8">
@@ -238,7 +244,7 @@ export function MealPlanCalendar() {
 
       {/* Mobile View */}
       <div className="block md:hidden">
-        <Tabs defaultValue={todayDayString} className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <ScrollArea className="w-full whitespace-nowrap">
                 <TabsList className="p-1 h-auto justify-start">
                     {weekDays.map(day => (

@@ -76,7 +76,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
 
   return (
     <>
-      <Card className="h-full overflow-hidden flex flex-col group shadow-lg hover:shadow-primary/20 transition-all duration-300 bg-gradient-to-br from-card to-secondary/20 border-border/20 hover:border-primary/30">
+      <Card className="h-full overflow-hidden flex flex-col group shadow-sm hover:shadow-primary/20 transition-all duration-300 bg-card border-border/20 hover:border-primary/30">
         <div className="relative">
            <Link href={`/recipes/${recipe.id}`} className="absolute inset-0 z-10" aria-label={`View ${recipe.name}`}>
             <span className="sr-only">View Recipe</span>

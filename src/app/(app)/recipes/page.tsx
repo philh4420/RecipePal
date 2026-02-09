@@ -44,7 +44,7 @@ export default function RecipesPage() {
         <Button 
             onClick={() => setAddModalOpen(true)} 
             size="lg" 
-            className="bg-gradient-to-r from-primary to-fuchsia-600 text-white shadow-lg hover:shadow-primary/50 transition-shadow">
+            className="bg-primary text-primary-foreground shadow-lg hover:shadow-primary/50 transition-shadow">
             <PlusCircle className="mr-2 h-5 w-5" />
             Add Recipe
         </Button>

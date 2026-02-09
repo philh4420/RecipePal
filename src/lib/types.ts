@@ -21,12 +21,20 @@ export interface Recipe {
   }
   
   export interface DayPlan {
-    breakfast?: Meal;
-    lunch?: Meal;
-    dinner?: Meal;
+    date: string; // YYYY-MM-DD
+    breakfast?: Meal | null;
+    lunch?: Meal | null;
+    dinner?: Meal | null;
+  }
+
+  export interface MealPlanDocument {
+    id: string; // Should be YYYY-MM-DD
+    userId: string;
+    breakfast?: string; // recipeId
+    lunch?: string; // recipeId
+    dinner?: string; // recipeId
   }
   
-  export interface MealPlan {
-    [date: string]: DayPlan;
-  }
-  
+export interface MealPlan {
+  [date: string]: DayPlan;
+}

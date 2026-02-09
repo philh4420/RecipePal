@@ -9,10 +9,12 @@
         "--only",
         "auth,firestore"
       ],
-      "google-developer-knowledge": {
-        "url": "https://developerknowledge.googleapis.com/mcp",
-        "headers": {
-          "X-Goog-Api-Key": "AIzaSyD-mlfRtmpPYJlUZCSyraF8pqkM9PufmrI"
+      "mcpServers": {
+        "google-developer-knowledge": {
+          "url": "https://developerknowledge.googleapis.com/mcp",
+          "headers": {
+            "X-Goog-Api-Key": "AIzaSyD-mlfRtmpPYJlUZCSyraF8pqkM9PufmrI"
+          }
         }
       }
     }

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Logo } from '@/components/logo';
@@ -12,7 +11,6 @@ import {
   SidebarMenuButton,
   SidebarInset,
   SidebarFooter,
-  SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { usePathname, useRouter } from 'next/navigation';
 import { CalendarDays, UtensilsCrossed, ShoppingCart } from 'lucide-react';
@@ -23,6 +21,7 @@ import React from 'react';
 import { UserButton } from '@/components/user-button';
 import { Loader } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { MobileBottomNav } from '@/components/mobile-bottom-nav';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -84,7 +83,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === item.href}
+                  isActive={pathname.startsWith(item.href)}
                   tooltip={{
                     children: item.label,
                   }}
@@ -103,13 +102,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </SidebarFooter>
       </Sidebar>
       <div className={cn("transition-[margin-left] duration-300 ease-in-out md:ml-[var(--sidebar-width-icon)] peer-data-[state=expanded]:md:ml-[var(--sidebar-width)]")}>
-        <div className="absolute top-4 right-4 md:hidden">
-            <SidebarTrigger />
-        </div>
-        <SidebarInset className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+        {/* Mobile Header */}
+        <header className="sticky top-0 z-40 flex h-14 items-center justify-between gap-4 border-b bg-background px-4 md:hidden">
+            <h1 className="text-xl font-semibold">RecipePal</h1>
+            <UserButton />
+        </header>
+        <SidebarInset className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto pb-24 md:pb-8">
           {children}
         </SidebarInset>
       </div>
+      <MobileBottomNav />
     </SidebarProvider>
   );
 }

@@ -76,7 +76,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
 
   return (
     <>
-      <Card className="h-full overflow-hidden flex flex-col group shadow-sm hover:shadow-lg transition-all duration-300">
+      <Card className="h-full overflow-hidden flex flex-col group shadow-lg hover:shadow-primary/20 transition-all duration-300 bg-gradient-to-br from-card to-secondary/20 border-border/20 hover:border-primary/30">
         <div className="relative">
            <Link href={`/recipes/${recipe.id}`} className="absolute inset-0 z-10" aria-label={`View ${recipe.name}`}>
             <span className="sr-only">View Recipe</span>
@@ -86,12 +86,12 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
               alt={recipe.name}
               width={400}
               height={225}
-              className="aspect-video w-full object-cover"
+              className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
            <div className="absolute top-3 right-3 z-20">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-background/80 hover:bg-background backdrop-blur-sm">
+                <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-background/60 hover:bg-background backdrop-blur-sm shadow-md">
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -107,7 +107,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
             </DropdownMenu>
           </div>
         </div>
-        <CardContent className="p-4 flex-grow flex flex-col">
+        <CardContent className="p-5 flex-grow flex flex-col">
           <h3 className="text-lg font-semibold leading-tight line-clamp-2 text-foreground flex-grow">
              <Link href={`/recipes/${recipe.id}`} className="hover:text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-ring rounded-sm">
               {recipe.name}

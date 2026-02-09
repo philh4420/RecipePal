@@ -33,15 +33,18 @@ export default function RecipesPage() {
   }, [recipes, searchTerm]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">My Recipes</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">My Recipes</h1>
           <p className="mt-2 text-lg text-muted-foreground">
-            Your personal collection of delicious recipes.
+            Your personal cookbook. Add, search, and manage your recipes.
           </p>
         </div>
-        <Button onClick={() => setAddModalOpen(true)} size="lg">
+        <Button 
+            onClick={() => setAddModalOpen(true)} 
+            size="lg" 
+            className="bg-gradient-to-r from-primary to-fuchsia-600 text-white shadow-lg hover:shadow-primary/50 transition-shadow">
             <PlusCircle className="mr-2 h-5 w-5" />
             Add Recipe
         </Button>
@@ -52,7 +55,7 @@ export default function RecipesPage() {
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
         <Input 
           placeholder="Search recipes by name..." 
-          className="pl-12 py-6 text-base" 
+          className="pl-12 py-6 text-base bg-card border-border/50" 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -61,11 +64,11 @@ export default function RecipesPage() {
       {isLoading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="space-y-4 rounded-lg bg-card border overflow-hidden">
-              <Skeleton className="h-[220px] w-full" />
+            <div key={i} className="space-y-4 rounded-lg bg-card border border-border/50 overflow-hidden">
+              <Skeleton className="h-[220px] w-full bg-muted/50" />
               <div className="space-y-3 p-4">
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-6 w-3/4 bg-muted/50" />
+                <Skeleton className="h-4 w-1/2 bg-muted/50" />
               </div>
             </div>
           ))}
@@ -73,14 +76,14 @@ export default function RecipesPage() {
       )}
 
       {!isLoading && filteredRecipes.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {filteredRecipes.map((recipe) => (
             <RecipeCard key={recipe.id} recipe={recipe} />
           ))}
         </div>
       )}
        {!isLoading && filteredRecipes.length === 0 && (
-        <div className="flex flex-col items-center justify-center text-center py-24 border-2 border-dashed rounded-xl bg-card">
+        <div className="flex flex-col items-center justify-center text-center py-24 border-2 border-dashed border-border/50 rounded-xl bg-card/50">
           <BookOpen className="h-16 w-16 text-muted-foreground/70" />
           <h2 className="mt-6 text-2xl font-semibold">No Recipes Found</h2>
           <p className="mt-2 max-w-sm text-muted-foreground">

@@ -1,7 +1,7 @@
 'use client';
 
 import type { Recipe } from '@/lib/types';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import { MoreHorizontal, Loader, Clock, ChefHat } from 'lucide-react';
@@ -76,7 +76,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
 
   return (
     <>
-      <Card className="flex flex-col h-full overflow-hidden group animate-in fade-in-0 zoom-in-95">
+      <Card className="h-full overflow-hidden flex flex-col group shadow-sm hover:shadow-lg transition-all duration-300">
         <div className="relative">
            <Link href={`/recipes/${recipe.id}`} className="absolute inset-0 z-10" aria-label={`View ${recipe.name}`}>
             <span className="sr-only">View Recipe</span>
@@ -85,8 +85,8 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
               src={imageUrl}
               alt={recipe.name}
               width={400}
-              height={250}
-              className="aspect-[16/10] w-full object-cover group-hover:scale-105 transition-transform duration-300"
+              height={225}
+              className="aspect-video w-full object-cover"
             />
            <div className="absolute top-3 right-3 z-20">
             <DropdownMenu>
@@ -107,29 +107,30 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
             </DropdownMenu>
           </div>
         </div>
-        <CardContent className="p-4 flex-grow">
-          <h3 className="text-lg font-bold leading-tight line-clamp-2 text-foreground">
-             <Link href={`/recipes/${recipe.id}`} className="hover:text-primary transition-colors focus:outline-none focus:text-primary">
+        <CardContent className="p-4 flex-grow flex flex-col">
+          <h3 className="text-lg font-semibold leading-tight line-clamp-2 text-foreground flex-grow">
+             <Link href={`/recipes/${recipe.id}`} className="hover:text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-ring rounded-sm">
               {recipe.name}
              </Link>
           </h3>
+        
+          {(recipe.prepTime || recipe.cookTime) && (
+            <div className="pt-4 mt-auto text-sm text-muted-foreground flex items-center gap-4">
+                {recipe.prepTime && recipe.prepTime > 0 ? (
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="h-4 w-4" />
+                    <span>{recipe.prepTime} min</span>
+                  </div>
+                ) : null}
+                {recipe.cookTime && recipe.cookTime > 0 ? (
+                  <div className="flex items-center gap-1.5">
+                    <ChefHat className="h-4 w-4" />
+                    <span>{recipe.cookTime} min</span>
+                  </div>
+                ) : null}
+            </div>
+          )}
         </CardContent>
-        {(recipe.prepTime || recipe.cookTime) ? (
-          <CardFooter className="p-4 pt-0 text-sm text-muted-foreground flex items-center gap-4">
-              {recipe.prepTime && recipe.prepTime > 0 ? (
-                <div className="flex items-center gap-1.5">
-                  <Clock className="h-4 w-4" />
-                  <span>{recipe.prepTime} min</span>
-                </div>
-              ) : null}
-              {recipe.cookTime && recipe.cookTime > 0 ? (
-                <div className="flex items-center gap-1.5">
-                  <ChefHat className="h-4 w-4" />
-                  <span>{recipe.cookTime} min</span>
-                </div>
-              ) : null}
-          </CardFooter>
-        ): null}
       </Card>
 
       <AddRecipeModal recipe={recipe} open={editModalOpen} onOpenChange={setEditModalOpen} />

@@ -33,10 +33,10 @@ export default function RecipesPage() {
   }, [recipes, searchTerm]);
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">My Recipes</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">My Recipes</h1>
           <p className="mt-2 text-lg text-muted-foreground">
             Your personal collection of delicious recipes.
           </p>
@@ -59,7 +59,7 @@ export default function RecipesPage() {
       </div>
 
       {isLoading && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="space-y-4 rounded-lg bg-card border overflow-hidden">
               <Skeleton className="h-[220px] w-full" />
@@ -73,7 +73,7 @@ export default function RecipesPage() {
       )}
 
       {!isLoading && filteredRecipes.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredRecipes.map((recipe) => (
             <RecipeCard key={recipe.id} recipe={recipe} />
           ))}
@@ -81,7 +81,7 @@ export default function RecipesPage() {
       )}
        {!isLoading && filteredRecipes.length === 0 && (
         <div className="flex flex-col items-center justify-center text-center py-24 border-2 border-dashed rounded-xl bg-card">
-          <BookOpen className="h-16 w-16 text-muted-foreground" />
+          <BookOpen className="h-16 w-16 text-muted-foreground/70" />
           <h2 className="mt-6 text-2xl font-semibold">No Recipes Found</h2>
           <p className="mt-2 max-w-sm text-muted-foreground">
             {searchTerm ? `No recipes match "${searchTerm}".` : 'Click "Add Recipe" to start your collection.'}

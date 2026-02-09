@@ -22,6 +22,7 @@ import { useUser } from '@/firebase';
 import React from 'react';
 import { UserButton } from '@/components/user-button';
 import { Loader } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -67,17 +68,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Sidebar
         variant="sidebar"
         collapsible="icon"
-        className="border-sidebar-border"
+        className="border-sidebar-border text-sidebar-foreground"
       >
         <SidebarHeader>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="shrink-0" asChild>
-              <Link href="/recipes">
-                <Logo />
-              </Link>
-            </Button>
-            <span className="text-lg font-semibold">RecipePal</span>
-          </div>
+          <Button variant="ghost" size="icon" className="shrink-0 size-10 flex items-center justify-center rounded-lg bg-primary/20 text-primary" asChild>
+            <Link href="/recipes">
+              <Logo className='size-5'/>
+            </Link>
+          </Button>
+          <span className="text-lg font-semibold text-sidebar-foreground">RecipePal</span>
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
@@ -103,12 +102,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <UserButton />
         </SidebarFooter>
       </Sidebar>
-      <SidebarInset className="p-4 sm:p-6 lg:p-8 max-w-full">
+      <div className={cn("md:ml-[3rem]", "data-[state=expanded]:md:ml-[16rem]", "transition-[margin-left] duration-300 ease-in-out")}>
         <div className="absolute top-4 right-4 md:hidden">
             <SidebarTrigger />
         </div>
-        {children}
-      </SidebarInset>
+        <SidebarInset className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+          {children}
+        </SidebarInset>
+      </div>
     </SidebarProvider>
   );
 }

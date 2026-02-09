@@ -13,6 +13,7 @@ export const ImportRecipeOutputSchema = z.object({
   servings: z.coerce.number().optional().describe('The number of servings the recipe makes.'),
   prepTime: z.coerce.number().optional().describe('The preparation time in minutes.'),
   cookTime: z.coerce.number().optional().describe('The cooking time in minutes.'),
+  imageUrl: z.string().url().optional().describe('A URL for an image of the recipe, if available.'),
 });
 export type ImportRecipeOutput = z.infer<typeof ImportRecipeOutputSchema>;
 
@@ -34,3 +35,16 @@ export const GenerateShoppingListOutputSchema = z.object({
   shoppingList: z.array(z.string()).describe('The consolidated shopping list with quantities adjusted.'),
 });
 export type GenerateShoppingListOutput = z.infer<typeof GenerateShoppingListOutputSchema>;
+
+
+// Types for generate-recipe-image flow
+export const GenerateRecipeImageInputSchema = z.object({
+  name: z.string().describe('The name of the recipe.'),
+  ingredients: z.array(z.string()).describe('The list of ingredients for the recipe.'),
+});
+export type GenerateRecipeImageInput = z.infer<typeof GenerateRecipeImageInputSchema>;
+
+export const GenerateRecipeImageOutputSchema = z.object({
+  imageUrl: z.string().url().describe('The data URI of the generated image.'),
+});
+export type GenerateRecipeImageOutput = z.infer<typeof GenerateRecipeImageOutputSchema>;

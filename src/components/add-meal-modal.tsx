@@ -62,7 +62,7 @@ export function AddMealModal({ open, onOpenChange, day, mealType, recipes }: Add
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-border/80 bg-card/95 sm:max-w-2xl">
+      <DialogContent className="rounded-3xl border-border/90 bg-card shadow-[0_28px_72px_rgba(12,10,8,0.45)] sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle className="font-headline text-3xl tracking-tight">Add a recipe to your {mealType}</DialogTitle>
           <DialogDescription>

@@ -200,7 +200,7 @@ export function AddRecipeModal({ recipe, open, onOpenChange }: RecipeModalProps)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[88vh] overflow-hidden border-border/80 bg-card/95 sm:max-w-[720px]">
+      <DialogContent className="max-h-[88vh] overflow-hidden rounded-3xl border-border/90 bg-card shadow-[0_28px_72px_rgba(12,10,8,0.45)] sm:max-w-[720px]">
         <DialogHeader>
           <DialogTitle className="font-headline text-3xl tracking-tight">{isEditMode ? 'Edit Recipe' : 'Add a New Recipe'}</DialogTitle>
           <DialogDescription>

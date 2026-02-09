@@ -102,7 +102,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <UserButton />
         </SidebarFooter>
       </Sidebar>
-      <div className={cn("md:ml-[3rem]", "data-[state=expanded]:md:ml-[16rem]", "transition-[margin-left] duration-300 ease-in-out")}>
+      <div className={cn("transition-[margin-left] duration-300 ease-in-out md:ml-[var(--sidebar-width-icon)] peer-data-[state=expanded]:md:ml-[var(--sidebar-width)]")}>
         <div className="absolute top-4 right-4 md:hidden">
             <SidebarTrigger />
         </div>

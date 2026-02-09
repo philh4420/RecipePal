@@ -8,7 +8,13 @@
         "experimental:mcp",
         "--only",
         "auth,firestore"
-      ]
+      ],
+      "google-developer-knowledge": {
+        "url": "https://developerknowledge.googleapis.com/mcp",
+        "headers": {
+          "X-Goog-Api-Key": "AIzaSyD-mlfRtmpPYJlUZCSyraF8pqkM9PufmrI"
+        }
+      }
     }
   }
 }

@@ -1,10 +1,10 @@
 'use client';
 
-import { Recipe } from '@/lib/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import type { Recipe } from '@/lib/types';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from './ui/button';
-import { MoreHorizontal, Loader } from 'lucide-react';
+import { MoreHorizontal, Loader, Clock, ChefHat } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -76,45 +76,61 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
 
   return (
     <>
-      <div className="relative group animate-in fade-in-0 zoom-in-95">
-        <Link href={`/recipes/${recipe.id}`} className="absolute inset-0 z-10" aria-label={`View ${recipe.name}`}>
-          <span className="sr-only">View Recipe</span>
-        </Link>
-        <Card className="overflow-hidden h-full">
-          <CardHeader className="p-0 relative">
-            <Image
+      <Card className="flex flex-col h-full overflow-hidden group animate-in fade-in-0 zoom-in-95">
+        <div className="relative">
+           <Link href={`/recipes/${recipe.id}`} className="absolute inset-0 z-10" aria-label={`View ${recipe.name}`}>
+            <span className="sr-only">View Recipe</span>
+           </Link>
+           <Image
               src={imageUrl}
               alt={recipe.name}
               width={400}
               height={250}
-              className="aspect-[16/10] w-full object-cover"
+              className="aspect-[16/10] w-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
-          </CardHeader>
-          <CardContent className="p-4">
-            <CardTitle className="text-lg font-bold leading-tight line-clamp-2">
-              {recipe.name}
-            </CardTitle>
-          </CardContent>
-        </Card>
-        <div className="absolute top-2 right-2 z-20">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="h-8 w-8 bg-white/80 hover:bg-white backdrop-blur-sm">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onSelect={() => setEditModalOpen(true)}>
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onSelect={() => setDeleteDialogOpen(true)} className="text-destructive focus:text-destructive focus:bg-destructive/10">
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+           <div className="absolute top-3 right-3 z-20">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-background/80 hover:bg-background backdrop-blur-sm">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onSelect={(e) => { e.preventDefault(); setEditModalOpen(true); }}>
+                  Edit
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onSelect={(e) => { e.preventDefault(); setDeleteDialogOpen(true); }} className="text-destructive focus:text-destructive focus:bg-destructive/10">
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </div>
+        <CardContent className="p-4 flex-grow">
+          <h3 className="text-lg font-bold leading-tight line-clamp-2 text-foreground">
+             <Link href={`/recipes/${recipe.id}`} className="hover:text-primary transition-colors focus:outline-none focus:text-primary">
+              {recipe.name}
+             </Link>
+          </h3>
+        </CardContent>
+        {(recipe.prepTime || recipe.cookTime) ? (
+          <CardFooter className="p-4 pt-0 text-sm text-muted-foreground flex items-center gap-4">
+              {recipe.prepTime && recipe.prepTime > 0 ? (
+                <div className="flex items-center gap-1.5">
+                  <Clock className="h-4 w-4" />
+                  <span>{recipe.prepTime} min</span>
+                </div>
+              ) : null}
+              {recipe.cookTime && recipe.cookTime > 0 ? (
+                <div className="flex items-center gap-1.5">
+                  <ChefHat className="h-4 w-4" />
+                  <span>{recipe.cookTime} min</span>
+                </div>
+              ) : null}
+          </CardFooter>
+        ): null}
+      </Card>
 
       <AddRecipeModal recipe={recipe} open={editModalOpen} onOpenChange={setEditModalOpen} />
 

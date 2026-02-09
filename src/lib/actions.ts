@@ -2,54 +2,33 @@
 
 import { generateShoppingList } from "@/ai/flows/generate-shopping-list";
 import { importRecipe } from "@/ai/flows/import-recipe-flow";
-import { mealPlan, recipes as allRecipes } from "./data";
 import type { AiRecipe, ImportRecipeOutput } from "@/ai/types";
 
-// A simple function to get all unique recipes from the meal plan
-function getRecipesFromMealPlan(): AiRecipe[] {
-    const recipeIds = new Set<string>();
-    
-    Object.values(mealPlan).forEach(dayPlan => {
-        Object.values(dayPlan).forEach(meal => {
-            if (meal) {
-                recipeIds.add(meal.recipe.id);
-            }
-        });
-    });
+/**
+ * A server action that takes a list of recipes and uses AI to generate a shopping list.
+ * @param recipes The list of recipes to generate the shopping list from.
+ * @returns An object containing the shopping list or an error message.
+ */
+export async function generateShoppingListAction(recipes: AiRecipe[]): Promise<{ shoppingList?: string[]; error?: string }> {
+  if (!recipes || recipes.length === 0) {
+      return { shoppingList: [] };
+  }
 
-    const recipesFromPlan = Array.from(recipeIds).map(id => {
-        const recipe = allRecipes.find(r => r.id === id);
-        if (!recipe) return null;
-        
-        // Adapt the recipe object to the AI-expected format
-        return {
-            name: recipe.name,
-            ingredients: recipe.ingredients,
-            servings: recipe.servings,
-        };
-    }).filter((r): r is AiRecipe => r !== null);
-
-    return recipesFromPlan;
-}
-
-
-export async function getShoppingList(): Promise<{ shoppingList?: string[]; error?: string }> {
   try {
-    const recipes = getRecipesFromMealPlan();
-
-    if (recipes.length === 0) {
-        return { shoppingList: [] };
-    }
-
     const result = await generateShoppingList({ recipes });
     return result;
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
-    return { error: 'Failed to generate shopping list. Please try again.' };
+    return { error: e.message || 'Failed to generate shopping list with AI. Please try again.' };
   }
 }
 
-// New action to extract recipe from URL
+
+/**
+ * A server action that extracts structured recipe data from a given URL using AI.
+ * @param url The URL of the recipe to extract.
+ * @returns An object containing the extracted recipe data or an error message.
+ */
 export async function extractRecipeFromUrl(url: string): Promise<{ recipe?: ImportRecipeOutput; error?: string }> {
     try {
         const recipe = await importRecipe({ url });

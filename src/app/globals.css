@@ -1,12 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-body {
-  font-family: var(--font-body);
-}
-
-@layer base {
+@theme {
   :root {
     --background: 60 56% 91%;
     --foreground: 24 10% 10%;
@@ -42,6 +36,7 @@ body {
     --sidebar-border: 60 30% 85%;
     --sidebar-ring: 121 30% 60%;
   }
+
   .dark {
     --background: 45 10% 10%;
     --foreground: 60 56% 91%;
@@ -76,13 +71,14 @@ body {
     --sidebar-border: 45 10% 15%;
     --sidebar-ring: 121 30% 60%;
   }
-}
 
-@layer base {
   * {
-    @apply border-border;
+    border-color: theme(colors.border);
   }
+
   body {
-    @apply bg-background text-foreground;
+    font-family: theme(fontFamily.body);
+    background-color: theme(colors.background);
+    color: theme(colors.foreground);
   }
 }

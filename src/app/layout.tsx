@@ -32,7 +32,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={cn('font-body antialiased bg-secondary', ptSans.variable)}>
+      <body className={cn('font-body antialiased', ptSans.variable)}>
         <FirebaseClientProvider>
           {children}
         </FirebaseClientProvider>

@@ -70,7 +70,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         className="border-sidebar-border text-sidebar-foreground"
       >
         <SidebarHeader>
-          <Button variant="ghost" size="icon" className="shrink-0 size-10 flex items-center justify-center rounded-lg bg-primary/20 text-primary" asChild>
+          <Button variant="ghost" size="icon" className="shrink-0 size-10 flex items-center justify-center rounded-lg text-primary" asChild>
             <Link href="/recipes">
               <Logo className='size-5'/>
             </Link>

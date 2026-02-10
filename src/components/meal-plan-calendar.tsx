@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 const MealCard = ({ meal, onRemove }: { meal: Meal; onRemove: () => void }) => (
-  <Card className="group relative overflow-hidden border-border/70 transition-all hover:-translate-y-0.5 hover:shadow-xl">
+  <Card className="group relative overflow-hidden border-border/70 bg-card transition-all hover:-translate-y-0.5 hover:shadow-[0_16px_30px_rgba(54,40,24,0.2)]">
     <CardContent className="p-0">
       <RecipeImage
         src={meal.recipe.imageUrl}
@@ -40,7 +40,7 @@ const MealCard = ({ meal, onRemove }: { meal: Meal; onRemove: () => void }) => (
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
        <AlertDialog>
           <AlertDialogTrigger asChild>
-              <Button variant="destructive" size="icon" className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+              <Button variant="destructive" size="icon" className="absolute right-1 top-1 z-10 h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100">
                 <X className="h-4 w-4" />
               </Button>
           </AlertDialogTrigger>
@@ -74,7 +74,7 @@ const DayMeals = ({ day, dayPlan, onAdd, onRemove }: { day: Date; dayPlan: DayPl
             {mealTypes.map((mealType) => {
             const meal = dayPlan[mealType.key];
             return (
-                <Card key={mealType.name} className="border-border/70 bg-card/90">
+                <Card key={mealType.name} className="border-border/70 bg-card">
                 <CardHeader className="p-3">
                     <CardTitle className="font-headline text-lg font-semibold">
                     {mealType.name}
@@ -84,7 +84,7 @@ const DayMeals = ({ day, dayPlan, onAdd, onRemove }: { day: Date; dayPlan: DayPl
                     {meal ? (
                     <MealCard meal={meal} onRemove={() => onRemove(day, mealType.key)} />
                     ) : (
-                    <Button variant="outline" className="h-24 w-full border-dashed border-border/70 bg-background/70" onClick={() => onAdd(day, mealType.name)}>
+                    <Button variant="outline" className="h-24 w-full border-dashed border-border/70 bg-muted/45 hover:bg-muted/65" onClick={() => onAdd(day, mealType.name)}>
                         <Plus className="h-5 w-5 text-muted-foreground" />
                     </Button>
                     )}
@@ -219,9 +219,9 @@ export function MealPlanCalendar() {
         mealType={modalState.mealType}
         recipes={recipes || []}
       />
-      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/90 p-6 shadow-[0_18px_36px_rgba(51,39,27,0.08)] sm:p-8">
-        <div className="pointer-events-none absolute -left-24 top-0 h-56 w-56 rounded-full bg-primary/12 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 bottom-0 h-56 w-56 rounded-full bg-accent/12 blur-3xl" />
+      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-[linear-gradient(135deg,hsl(var(--card))_0%,hsl(var(--card))_55%,hsl(var(--secondary)/0.58)_100%)] p-6 shadow-[0_24px_44px_rgba(51,39,27,0.14)] sm:p-8">
+        <div className="pointer-events-none absolute -left-24 top-0 h-56 w-56 rounded-full bg-primary/18 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-56 w-56 rounded-full bg-accent/16 blur-3xl" />
         <div className="relative">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">Weekly Rhythm</p>
           <h1 className="mt-3 font-headline text-4xl font-semibold tracking-tight">Meal Plan</h1>
@@ -233,12 +233,12 @@ export function MealPlanCalendar() {
 
       {/* Desktop View */}
       <div className="hidden md:block">
-        <ScrollArea className="rounded-2xl border border-border/70 bg-card/85 p-4 shadow-[0_14px_30px_rgba(58,45,34,0.1)]">
+        <ScrollArea className="rounded-2xl border border-border/70 bg-card p-4 shadow-[0_16px_32px_rgba(58,45,34,0.14)]">
             {isLoading ? <CalendarSkeleton /> : (
                 <div className="grid grid-cols-7 gap-4 min-w-[800px]">
                 {weekDays.map((day, index) => (
                     <div key={day.toISOString()} className="space-y-4">
-                    <div className="rounded-xl bg-muted/65 p-2 text-center">
+                    <div className="rounded-xl bg-muted/78 p-2 text-center">
                         <p className="font-headline text-2xl font-semibold">{format(day, 'E')}</p>
                         <p className="text-sm text-muted-foreground">{format(day, 'd')}</p>
                     </div>
@@ -257,7 +257,7 @@ export function MealPlanCalendar() {
             <ScrollArea className="w-full whitespace-nowrap">
                 <TabsList className="h-auto justify-start rounded-xl p-1">
                     {weekDays.map(day => (
-                        <TabsTrigger key={day.toISOString()} value={format(day, 'E')} className="h-auto flex-col px-4 py-2 data-[state=active]:shadow-md">
+                        <TabsTrigger key={day.toISOString()} value={format(day, 'E')} className="h-auto flex-col px-4 py-2 data-[state=active]:shadow-[0_10px_18px_rgba(56,41,24,0.16)]">
                             <span className="text-xs font-medium">{format(day, 'E')}</span>
                             <span className="text-base font-bold mt-1">{format(day, 'd')}</span>
                         </TabsTrigger>

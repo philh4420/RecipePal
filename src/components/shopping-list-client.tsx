@@ -120,9 +120,9 @@ export function ShoppingListClient() {
 
   return (
     <div className="space-y-8">
-      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/90 p-6 shadow-[0_18px_36px_rgba(51,39,27,0.08)] sm:p-8">
-        <div className="pointer-events-none absolute -left-20 -top-20 h-52 w-52 rounded-full bg-primary/12 blur-3xl" />
-        <div className="pointer-events-none absolute -right-16 -bottom-16 h-52 w-52 rounded-full bg-accent/14 blur-3xl" />
+      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-[linear-gradient(135deg,hsl(var(--card))_0%,hsl(var(--card))_56%,hsl(var(--secondary)/0.58)_100%)] p-6 shadow-[0_24px_44px_rgba(51,39,27,0.14)] sm:p-8">
+        <div className="pointer-events-none absolute -left-20 -top-20 h-52 w-52 rounded-full bg-primary/18 blur-3xl" />
+        <div className="pointer-events-none absolute -right-16 -bottom-16 h-52 w-52 rounded-full bg-accent/18 blur-3xl" />
         <div className="relative flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div className="flex-1">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">Weekly Prep</p>
@@ -142,7 +142,7 @@ export function ShoppingListClient() {
         </div>
       </div>
 
-      <Card className="border-border/70 bg-card/90">
+      <Card className="border-border/70 bg-card shadow-[0_14px_30px_rgba(58,45,34,0.14)]">
         <CardHeader>
           <CardTitle className="font-headline text-3xl">Your List</CardTitle>
         </CardHeader>
@@ -159,7 +159,7 @@ export function ShoppingListClient() {
                 return (
                   <div key={index} className={cn(!isCategory && "flex items-center space-x-3 pl-2")}>
                     {isCategory ? (
-                       <h3 className="text-lg font-semibold mt-4 first:mt-0 text-primary">{item}</h3>
+                       <h3 className="mt-4 text-lg font-semibold text-primary first:mt-0">{item}</h3>
                     ) : (
                         <>
                             <Checkbox
@@ -169,7 +169,7 @@ export function ShoppingListClient() {
                             />
                             <label
                                 htmlFor={`item-${index}`}
-                                className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                className={`text-sm font-medium leading-none text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
                                 checkedItems[item] ? 'line-through text-muted-foreground' : ''
                                 }`}
                             >

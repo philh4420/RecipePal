@@ -5,7 +5,4 @@ name = "RecipePal"
 [setup]
 script = ""
 
-[[actions]]
-name = "Run"
-icon = "run"
-command = "codex mcp add context7 -- npx -y @upstash/context7-mcp"
+

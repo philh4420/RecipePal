@@ -75,7 +75,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
 
   return (
     <>
-      <Card className="group flex h-full flex-col overflow-hidden border-border/70 bg-card/95 transition-all duration-300 hover:-translate-y-1 hover:border-primary/35 hover:shadow-[0_18px_36px_rgba(64,53,40,0.16)]">
+      <Card className="group flex h-full flex-col overflow-hidden border-border/70 bg-card transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/35 hover:shadow-[0_22px_40px_rgba(64,53,40,0.2)]">
         <div className="relative">
            <Link href={`/recipes/${recipe.id}`} className="absolute inset-0 z-10" aria-label={`View ${recipeName}`}>
             <span className="sr-only">View Recipe</span>
@@ -86,15 +86,15 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
               width={400}
               height={225}
               className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            />
+           />
            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
-           <div className="absolute left-3 top-3 rounded-full bg-black/35 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm">
+           <div className="absolute left-3 top-3 rounded-full bg-black/45 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm">
             Recipe
            </div>
            <div className="absolute top-3 right-3 z-20">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-card/75 hover:bg-card backdrop-blur-sm shadow-md">
+                <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-card/85 hover:bg-card backdrop-blur-sm shadow-md">
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -120,13 +120,13 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
           {(recipe.prepTime || recipe.cookTime) && (
             <div className="mt-auto flex items-center gap-3 pt-4 text-sm text-muted-foreground">
                 {recipe.prepTime && recipe.prepTime > 0 ? (
-                  <div className="flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1">
+                  <div className="flex items-center gap-1.5 rounded-full bg-muted/85 px-2.5 py-1">
                     <Clock className="h-4 w-4" />
                     <span>{recipe.prepTime} min</span>
                   </div>
                 ) : null}
                 {recipe.cookTime && recipe.cookTime > 0 ? (
-                  <div className="flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1">
+                  <div className="flex items-center gap-1.5 rounded-full bg-muted/85 px-2.5 py-1">
                     <ChefHat className="h-4 w-4" />
                     <span>{recipe.cookTime} min</span>
                   </div>

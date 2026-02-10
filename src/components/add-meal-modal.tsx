@@ -62,19 +62,19 @@ export function AddMealModal({ open, onOpenChange, day, mealType, recipes }: Add
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="rounded-3xl border-border/90 bg-card shadow-[0_28px_72px_rgba(12,10,8,0.45)] sm:max-w-2xl">
+      <DialogContent className="rounded-3xl border-border/90 bg-[hsl(var(--card))] shadow-[0_36px_82px_rgba(12,10,8,0.5)] sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle className="font-headline text-3xl tracking-tight">Add a recipe to your {mealType}</DialogTitle>
           <DialogDescription>
             Select one of your saved recipes to add to the meal plan.
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="max-h-[60vh]">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-1">
+        <ScrollArea className="max-h-[60vh] rounded-2xl border border-border/70 bg-muted/35 p-3">
+          <div className="grid grid-cols-1 gap-4 p-1 sm:grid-cols-2 lg:grid-cols-3">
             {recipes.map((recipe) => (
               <div
                 key={recipe.id}
-                className="group relative cursor-pointer overflow-hidden rounded-xl border border-border/70"
+                className="group relative cursor-pointer overflow-hidden rounded-xl border border-border/70 bg-card"
                 onClick={() => !isSaving && handleSelectRecipe(recipe)}
               >
                 <RecipeImage
@@ -84,7 +84,7 @@ export function AddMealModal({ open, onOpenChange, day, mealType, recipes }: Add
                   height={120}
                   className="w-full h-28 object-cover"
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/45 opacity-0 transition-all group-hover:opacity-100">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-all group-hover:opacity-100">
                     {isSaving === recipe.id ? (
                         <Loader className="h-6 w-6 text-white animate-spin" />
                     ) : (

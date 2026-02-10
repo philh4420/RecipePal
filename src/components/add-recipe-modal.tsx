@@ -200,22 +200,22 @@ export function AddRecipeModal({ recipe, open, onOpenChange }: RecipeModalProps)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[88vh] overflow-hidden rounded-3xl border-border/90 bg-card shadow-[0_28px_72px_rgba(12,10,8,0.45)] sm:max-w-[720px]">
+      <DialogContent className="max-h-[90vh] overflow-hidden rounded-[28px] border-border/90 bg-[hsl(var(--card))] shadow-[0_36px_82px_rgba(12,10,8,0.5)] sm:max-w-[760px]">
         <DialogHeader>
           <DialogTitle className="font-headline text-3xl tracking-tight">{isEditMode ? 'Edit Recipe' : 'Add a New Recipe'}</DialogTitle>
           <DialogDescription>
             {isEditMode ? 'Make changes to your recipe below.' : 'Import a recipe from a URL or enter it manually.'}
           </DialogDescription>
         </DialogHeader>
-        <Tabs defaultValue="manual" value={isEditMode ? 'manual' : undefined} className="space-y-2">
-          <TabsList className={cn('grid w-full', isEditMode ? 'grid-cols-1' : 'grid-cols-2')}>
+        <Tabs defaultValue="manual" value={isEditMode ? 'manual' : undefined} className="space-y-4">
+          <TabsList className={cn('grid w-full rounded-xl bg-muted/80', isEditMode ? 'grid-cols-1' : 'grid-cols-2')}>
             {!isEditMode && <TabsTrigger value="import">Import from URL</TabsTrigger>}
             <TabsTrigger value="manual">{isEditMode ? 'Recipe Details' : 'Manual Entry'}</TabsTrigger>
           </TabsList>
           {!isEditMode && 
             <TabsContent value="import">
               <Form {...importForm}>
-                <form onSubmit={importForm.handleSubmit(handleImportSubmit)} className="space-y-4 py-4">
+                <form onSubmit={importForm.handleSubmit(handleImportSubmit)} className="space-y-4 rounded-2xl border border-border/70 bg-muted/35 p-4">
                   <FormField
                     control={importForm.control}
                     name="url"
@@ -248,7 +248,7 @@ export function AddRecipeModal({ recipe, open, onOpenChange }: RecipeModalProps)
           }
           <TabsContent value="manual">
             <Form {...manualForm}>
-              <form onSubmit={manualForm.handleSubmit(handleManualSubmit)} className="space-y-4 overflow-y-auto py-4 pr-2 max-h-[62vh]">
+              <form onSubmit={manualForm.handleSubmit(handleManualSubmit)} className="max-h-[62vh] space-y-4 overflow-y-auto rounded-2xl border border-border/70 bg-muted/35 p-4 pr-3">
                 <FormField
                   control={manualForm.control}
                   name="name"

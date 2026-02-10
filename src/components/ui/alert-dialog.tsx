@@ -15,7 +15,7 @@ const AlertDialogPortal = AlertDialogPrimitive.Portal
 const AlertDialogOverlay = ({ className, ...props }: React.ComponentPropsWithRef<typeof AlertDialogPrimitive.Overlay>) => (
   <AlertDialogPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-50 bg-black/68 backdrop-blur-[2px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-[hsl(20_32%_7%/0.74)] backdrop-blur-[4px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
@@ -28,7 +28,7 @@ const AlertDialogContent = ({ className, ...props }: React.ComponentPropsWithRef
     <AlertDialogOverlay />
     <AlertDialogPrimitive.Content
       className={cn(
-        "fixed left-[50%] top-[50%] z-[60] isolate grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-border/90 bg-[hsl(var(--card))] p-6 text-card-foreground shadow-[0_34px_72px_rgba(16,12,8,0.44)] duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-2xl",
+        "fixed left-[50%] top-[50%] z-[60] isolate grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 overflow-hidden border border-border/90 bg-[linear-gradient(155deg,hsl(var(--card))_0%,hsl(var(--card))_66%,hsl(var(--secondary)/0.42)_100%)] p-6 text-card-foreground shadow-[0_42px_92px_rgba(16,12,8,0.5)] duration-200 after:pointer-events-none after:absolute after:inset-x-0 after:top-0 after:h-[3px] after:bg-[linear-gradient(90deg,hsl(var(--primary)),hsl(var(--accent)))] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-3xl",
         className
       )}
       {...props}

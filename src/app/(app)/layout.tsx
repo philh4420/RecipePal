@@ -70,9 +70,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Sidebar
         variant="sidebar"
         collapsible="icon"
-        className="border-sidebar-border/90 bg-sidebar text-sidebar-foreground shadow-[0_24px_44px_rgba(6,4,2,0.34)]"
+        className="border-sidebar-border/90 bg-[linear-gradient(180deg,hsl(var(--sidebar-background))_0%,hsl(24_40%_9%)_100%)] text-sidebar-foreground shadow-[0_24px_44px_rgba(6,4,2,0.4)]"
       >
-        <SidebarHeader className="border-b border-sidebar-border/70 bg-sidebar px-3 py-5">
+        <SidebarHeader className="border-b border-sidebar-border/70 bg-transparent px-3 py-5">
           <Button
             variant="ghost"
             size="icon"
@@ -88,7 +88,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <span className="mt-1 text-[11px] uppercase tracking-[0.2em] text-sidebar-foreground/65">Kitchen Companion</span>
           </div>
         </SidebarHeader>
-        <SidebarContent className="bg-sidebar px-2 py-3">
+        <SidebarContent className="bg-transparent px-2 py-3">
           <SidebarMenu>
             {menuItems.map((item) => (
               <SidebarMenuItem key={item.href}>
@@ -109,7 +109,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             ))}
           </SidebarMenu>
         </SidebarContent>
-        <SidebarFooter className="border-t border-sidebar-border/70 bg-sidebar px-3 py-3">
+        <SidebarFooter className="border-t border-sidebar-border/70 bg-transparent px-3 py-3">
             <UserButton />
         </SidebarFooter>
       </Sidebar>

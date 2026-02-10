@@ -67,7 +67,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Sidebar
         variant="sidebar"
         collapsible="icon"
-        className="border-sidebar-border/80 bg-sidebar/95 text-sidebar-foreground shadow-2xl shadow-black/15 backdrop-blur"
+        className="border-sidebar-border/90 bg-sidebar text-sidebar-foreground shadow-2xl shadow-black/20"
       >
         <SidebarHeader className="border-b border-sidebar-border/70 px-3 py-4">
           <Button variant="ghost" size="icon" className="shrink-0 size-10 rounded-xl bg-sidebar-accent/70 text-sidebar-primary hover:bg-sidebar-accent hover:text-sidebar-primary" asChild>

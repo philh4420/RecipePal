@@ -2,35 +2,35 @@
 
 @layer base {
   :root {
-    --background: 42 67% 95%;
-    --foreground: 20 29% 16%;
-    --card: 42 70% 98%;
-    --card-foreground: 20 29% 16%;
-    --popover: 42 70% 98%;
-    --popover-foreground: 20 29% 16%;
-    --primary: 11 78% 47%;
-    --primary-foreground: 42 100% 97%;
-    --secondary: 94 25% 86%;
-    --secondary-foreground: 20 27% 17%;
-    --muted: 40 44% 90%;
-    --muted-foreground: 24 18% 36%;
-    --accent: 38 89% 54%;
-    --accent-foreground: 22 34% 18%;
+    --background: 39 72% 92%;
+    --foreground: 22 34% 16%;
+    --card: 43 76% 97%;
+    --card-foreground: 22 34% 16%;
+    --popover: 43 76% 97%;
+    --popover-foreground: 22 34% 16%;
+    --primary: 8 68% 47%;
+    --primary-foreground: 43 100% 97%;
+    --secondary: 92 24% 82%;
+    --secondary-foreground: 23 30% 16%;
+    --muted: 36 50% 86%;
+    --muted-foreground: 22 18% 33%;
+    --accent: 42 88% 55%;
+    --accent-foreground: 23 34% 17%;
     --destructive: 0 73% 46%;
     --destructive-foreground: 0 0% 98%;
-    --border: 33 34% 78%;
-    --input: 33 34% 76%;
-    --ring: 11 78% 47%;
+    --border: 29 36% 70%;
+    --input: 29 36% 70%;
+    --ring: 8 68% 47%;
     --radius: 0.875rem;
 
-    --sidebar-background: 107 26% 20%;
-    --sidebar-foreground: 45 55% 91%;
-    --sidebar-primary: 38 88% 66%;
-    --sidebar-primary-foreground: 105 25% 14%;
-    --sidebar-accent: 108 20% 28%;
-    --sidebar-accent-foreground: 45 52% 90%;
-    --sidebar-border: 108 18% 33%;
-    --sidebar-ring: 38 88% 66%;
+    --sidebar-background: 98 30% 18%;
+    --sidebar-foreground: 44 66% 92%;
+    --sidebar-primary: 42 92% 66%;
+    --sidebar-primary-foreground: 99 30% 14%;
+    --sidebar-accent: 100 22% 28%;
+    --sidebar-accent-foreground: 44 58% 91%;
+    --sidebar-border: 100 19% 35%;
+    --sidebar-ring: 42 92% 66%;
   }
 
   .dark {
@@ -75,10 +75,10 @@
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
     background-image:
-      radial-gradient(circle at 7% 0%, hsl(38 88% 83% / 0.72), transparent 34%),
-      radial-gradient(circle at 92% 0%, hsl(98 36% 80% / 0.4), transparent 33%),
-      radial-gradient(circle at 86% 100%, hsl(16 88% 84% / 0.46), transparent 40%),
-      linear-gradient(180deg, hsl(var(--background)), hsl(41 54% 93%));
+      radial-gradient(circle at 0% 0%, hsl(44 100% 78% / 0.75), transparent 34%),
+      radial-gradient(circle at 96% 0%, hsl(92 40% 73% / 0.5), transparent 36%),
+      radial-gradient(circle at 100% 100%, hsl(10 96% 75% / 0.5), transparent 42%),
+      linear-gradient(180deg, hsl(var(--background)), hsl(34 66% 88%));
     background-attachment: fixed;
   }
 

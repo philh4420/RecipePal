@@ -37,9 +37,9 @@ export default function RecipesPage() {
 
   return (
     <div className="space-y-10">
-      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/90 p-6 shadow-[0_18px_36px_rgba(51,39,27,0.08)] sm:p-8">
-        <div className="pointer-events-none absolute -left-24 top-0 h-60 w-60 rounded-full bg-primary/14 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 bottom-0 h-60 w-60 rounded-full bg-accent/14 blur-3xl" />
+      <div className="relative overflow-hidden rounded-3xl border border-border/80 bg-gradient-to-br from-card via-card to-secondary/45 p-6 shadow-[0_22px_44px_rgba(66,42,18,0.18)] sm:p-8">
+        <div className="pointer-events-none absolute -left-24 top-0 h-60 w-60 rounded-full bg-primary/22 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-60 w-60 rounded-full bg-accent/22 blur-3xl" />
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">My Kitchen Notebook</p>
@@ -54,7 +54,7 @@ export default function RecipesPage() {
           <Button
             onClick={() => setAddModalOpen(true)}
             size="lg"
-            className="self-start rounded-xl px-6"
+            className="self-start rounded-xl px-6 shadow-[0_16px_30px_hsl(var(--primary)/0.35)]"
           >
             <PlusCircle className="mr-2 h-5 w-5" />
             Add Recipe

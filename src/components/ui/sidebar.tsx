@@ -444,7 +444,7 @@ const SidebarMenuItem = ({ className, ...props }: React.ComponentPropsWithRef<"l
 SidebarMenuItem.displayName = "SidebarMenuItem"
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-xl p-2 text-left text-sm text-[hsl(var(--sidebar-foreground))] outline-none ring-sidebar-ring transition-[width,height,padding,background,transform,box-shadow,color] hover:bg-sidebar-accent/90 hover:text-[hsl(var(--sidebar-foreground))] hover:shadow-[inset_0_1px_0_hsl(var(--sidebar-accent-foreground)/0.06)] focus-visible:ring-2 active:bg-sidebar-accent active:text-[hsl(var(--sidebar-foreground))] disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-[hsl(var(--sidebar-foreground))] group-data-[collapsible=icon]:!size-9 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-xl p-2 text-left text-sm text-sidebar-foreground outline-none ring-sidebar-ring transition-[width,height,padding,background,color,box-shadow] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[inset_0_1px_0_hsl(var(--sidebar-accent-foreground)/0.06)] focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-primary data-[active=true]:font-semibold data-[active=true]:text-sidebar-primary-foreground data-[active=true]:shadow-[0_10px_20px_rgba(0,0,0,0.28)] data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-9 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -483,16 +483,12 @@ const SidebarMenuButton = (
   const Comp = asChild ? Slot : "button"
   const { isMobile, state } = useSidebar()
 
-  const activeClassName = isActive
-    ? "bg-sidebar-primary text-[hsl(var(--sidebar-primary-foreground))] shadow-[0_10px_20px_rgba(10,8,5,0.24)] hover:bg-sidebar-primary/95 hover:text-[hsl(var(--sidebar-primary-foreground))]"
-    : "text-[hsl(var(--sidebar-foreground))]"
-
   const button = (
     <Comp
       data-sidebar="menu-button"
       data-size={size}
       data-active={isActive}
-      className={cn(sidebarMenuButtonVariants({ variant, size }), activeClassName, className)}
+      className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
       {...props}
     />
   )

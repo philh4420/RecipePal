@@ -67,20 +67,20 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Sidebar
         variant="sidebar"
         collapsible="icon"
-        className="border-sidebar-border/90 bg-[linear-gradient(180deg,hsl(var(--sidebar-background)),hsl(103_24%_16%))] text-sidebar-foreground shadow-[0_24px_48px_rgba(9,8,5,0.32)]"
+        className="border-sidebar-border/90 bg-sidebar text-sidebar-foreground shadow-[0_24px_44px_rgba(6,4,2,0.34)]"
       >
-        <SidebarHeader className="border-b border-sidebar-border/70 px-3 py-5">
-          <Button variant="ghost" size="icon" className="shrink-0 size-10 rounded-xl bg-sidebar-accent/85 text-sidebar-primary shadow-[inset_0_1px_0_hsl(var(--sidebar-accent-foreground)/0.08)] hover:bg-sidebar-accent hover:text-sidebar-primary" asChild>
+        <SidebarHeader className="border-b border-sidebar-border/70 bg-sidebar px-3 py-5">
+          <Button variant="ghost" size="icon" className="size-10 shrink-0 rounded-xl bg-sidebar-accent/88 text-sidebar-foreground shadow-[inset_0_1px_0_hsl(var(--sidebar-accent-foreground)/0.1)] hover:bg-sidebar-accent hover:text-sidebar-foreground" asChild>
             <Link href="/recipes">
               <Logo className='size-5'/>
             </Link>
           </Button>
           <div className="flex flex-col leading-none">
-            <span className="text-xl font-headline font-semibold tracking-tight text-[hsl(var(--sidebar-foreground))]">RecipePal</span>
-            <span className="mt-1 text-[11px] uppercase tracking-[0.2em] text-[hsl(var(--sidebar-foreground)/0.68)]">Kitchen Companion</span>
+            <span className="text-xl font-headline font-semibold tracking-tight text-sidebar-foreground">RecipePal</span>
+            <span className="mt-1 text-[11px] uppercase tracking-[0.2em] text-sidebar-foreground/65">Kitchen Companion</span>
           </div>
         </SidebarHeader>
-        <SidebarContent className="px-2 py-3">
+        <SidebarContent className="bg-sidebar px-2 py-3">
           <SidebarMenu>
             {menuItems.map((item) => (
               <SidebarMenuItem key={item.href}>
@@ -101,13 +101,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             ))}
           </SidebarMenu>
         </SidebarContent>
-        <SidebarFooter className="border-t border-sidebar-border/70 px-3 py-3">
+        <SidebarFooter className="border-t border-sidebar-border/70 bg-sidebar px-3 py-3">
             <UserButton />
         </SidebarFooter>
       </Sidebar>
       <div className={cn("transition-[margin-left] duration-300 ease-in-out md:ml-[var(--sidebar-width-icon)] peer-data-[state=expanded]:md:ml-[var(--sidebar-width)]")}>
         {/* Mobile Header */}
-        <header className="sticky top-0 z-40 flex h-14 items-center justify-between gap-4 border-b border-border/60 bg-card px-4 shadow-[0_8px_16px_rgba(64,49,30,0.08)] backdrop-blur md:hidden">
+        <header className="sticky top-0 z-40 flex h-14 items-center justify-between gap-4 border-b border-border/60 bg-card/95 px-4 shadow-[0_10px_18px_rgba(64,49,30,0.1)] backdrop-blur md:hidden">
             <h1 className="font-headline text-xl font-semibold tracking-tight">RecipePal</h1>
             <UserButton />
         </header>

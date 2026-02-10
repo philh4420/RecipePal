@@ -54,9 +54,10 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background p-4">
-      <div className="pointer-events-none absolute -left-28 top-0 h-72 w-72 rounded-full bg-primary/24 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-accent/22 blur-3xl" />
-      <Card className="relative w-full max-w-md border-border/70 bg-card shadow-[0_30px_60px_rgba(54,42,30,0.22)]">
+      <div className="pointer-events-none absolute -left-28 top-0 h-72 w-72 rounded-full bg-primary/18 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-accent/16 blur-3xl" />
+      <Card className="relative w-full max-w-md border-border/70 bg-card/95 shadow-[0_28px_56px_rgba(54,42,30,0.18)]">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,hsl(var(--primary)),hsl(var(--accent)))]" />
         <CardHeader className="text-center">
            <div className="flex justify-center mb-4">
             <Logo className="h-10 w-10 text-primary" />

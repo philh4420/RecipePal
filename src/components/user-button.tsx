@@ -40,8 +40,8 @@ export function UserButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-10 w-10 rounded-full bg-sidebar-accent/30 p-0 text-[hsl(var(--sidebar-foreground))] hover:bg-sidebar-accent/55 hover:text-[hsl(var(--sidebar-foreground))]">
-          <Avatar className="h-10 w-10 border border-border/60">
+        <Button variant="ghost" className="relative h-10 w-10 rounded-full border border-sidebar-border/70 bg-sidebar-accent/35 p-0 text-sidebar-foreground hover:bg-sidebar-accent/65 hover:text-sidebar-foreground">
+          <Avatar className="h-10 w-10 border border-sidebar-border/70">
             <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
             <AvatarFallback className="bg-secondary text-secondary-foreground">
               <UserIcon />
@@ -49,7 +49,13 @@ export function UserButton() {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 border-border/90 bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] shadow-[0_22px_44px_rgba(15,11,7,0.28)]" align="end" forceMount>
+      <DropdownMenuContent
+        className="w-56 rounded-xl border-border bg-card text-card-foreground shadow-[0_24px_44px_rgba(7,5,3,0.32)]"
+        align="start"
+        side="top"
+        sideOffset={10}
+        forceMount
+      >
         <DropdownMenuLabel className="font-normal text-foreground">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">{user.displayName}</p>

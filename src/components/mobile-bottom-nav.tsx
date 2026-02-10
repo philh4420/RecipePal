@@ -28,7 +28,7 @@ export function MobileBottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 z-50 h-16 w-full border-t border-border/70 bg-card shadow-[0_-10px_24px_rgba(44,38,30,0.12)] backdrop-blur md:hidden">
+    <nav className="fixed bottom-0 left-0 z-50 h-16 w-full border-t border-border/70 bg-card/95 shadow-[0_-10px_24px_rgba(44,38,30,0.1)] backdrop-blur md:hidden">
       <div className="mx-auto grid h-full max-w-lg grid-cols-3">
         {menuItems.map((item) => {
           const isActive = pathname.startsWith(item.href);
@@ -39,7 +39,7 @@ export function MobileBottomNav() {
               className={cn(
                 'inline-flex flex-col items-center justify-center rounded-xl px-5 font-medium transition-all',
                 isActive
-                  ? 'bg-primary/14 text-primary shadow-[inset_0_1px_0_hsl(var(--card))]'
+                  ? 'bg-primary/16 text-primary shadow-[inset_0_1px_0_hsl(var(--card))]'
                   : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
               )}
             >

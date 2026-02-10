@@ -57,9 +57,10 @@ export default function RecipeDetailsPage() {
   
   return (
     <div className="mx-auto max-w-5xl space-y-8 pb-12">
-      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card p-6 shadow-[0_22px_42px_rgba(51,39,27,0.12)] sm:p-8">
-        <div className="pointer-events-none absolute -left-20 top-0 h-48 w-48 rounded-full bg-primary/18 blur-3xl" />
-        <div className="pointer-events-none absolute -right-16 bottom-0 h-44 w-44 rounded-full bg-accent/16 blur-3xl" />
+      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-[linear-gradient(140deg,hsl(var(--card))_0%,hsl(var(--card))_60%,hsl(var(--secondary)/0.5)_100%)] p-6 shadow-[0_22px_42px_rgba(51,39,27,0.12)] sm:p-8">
+        <div className="pointer-events-none absolute -left-20 top-0 h-48 w-48 rounded-full bg-primary/14 blur-3xl" />
+        <div className="pointer-events-none absolute -right-16 bottom-0 h-44 w-44 rounded-full bg-accent/14 blur-3xl" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,hsl(var(--primary)),hsl(var(--accent)))]" />
         <h1 className="font-headline text-4xl font-semibold tracking-tight sm:text-5xl">{recipeName}</h1>
         {recipe.url && (
             <a href={recipe.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block break-all text-sm text-primary hover:underline">
@@ -100,7 +101,7 @@ export default function RecipeDetailsPage() {
         </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-1 rounded-2xl border border-border/70 bg-card p-5 shadow-[0_12px_28px_rgba(49,39,30,0.12)]">
+        <div className="lg:col-span-1 rounded-2xl border border-border/70 bg-card/95 p-5 shadow-[0_12px_28px_rgba(49,39,30,0.11)]">
           <h2 className="mb-4 font-headline text-3xl font-semibold">Ingredients</h2>
           <ul className="list-disc list-inside space-y-2.5">
             {recipe.ingredients.map((ingredient, index) => (
@@ -108,7 +109,7 @@ export default function RecipeDetailsPage() {
             ))}
           </ul>
         </div>
-        <div className="lg:col-span-2 rounded-2xl border border-border/70 bg-card p-6 shadow-[0_12px_28px_rgba(49,39,30,0.12)]">
+        <div className="lg:col-span-2 rounded-2xl border border-border/70 bg-card/95 p-6 shadow-[0_12px_28px_rgba(49,39,30,0.11)]">
           <h2 className="mb-4 font-headline text-3xl font-semibold">Instructions</h2>
           <div className="prose max-w-none whitespace-pre-line text-base leading-relaxed">
             {recipe.instructions}

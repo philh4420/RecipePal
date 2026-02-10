@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-[linear-gradient(130deg,hsl(var(--primary))_0%,hsl(var(--accent))_140%)] text-primary-foreground shadow-[0_14px_28px_hsl(var(--primary)/0.3)] hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_18px_34px_hsl(var(--primary)/0.36)]",
+          "bg-[linear-gradient(132deg,hsl(var(--primary))_0%,hsl(var(--primary))_58%,hsl(var(--accent))_142%)] text-primary-foreground shadow-[0_14px_30px_hsl(var(--primary)/0.3)] hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_18px_36px_hsl(var(--primary)/0.35)]",
         destructive:
           "bg-destructive text-destructive-foreground shadow-[0_12px_24px_hsl(var(--destructive)/0.24)] hover:-translate-y-0.5 hover:bg-destructive/90",
         outline:
-          "border border-border/85 bg-card text-foreground shadow-[0_8px_18px_rgba(68,53,33,0.08)] hover:-translate-y-0.5 hover:border-primary/45 hover:bg-primary/10 hover:text-foreground",
+          "border border-border/85 bg-card text-foreground shadow-[0_8px_18px_rgba(68,53,33,0.08)] hover:-translate-y-0.5 hover:border-primary/45 hover:bg-primary/8 hover:text-foreground",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-[inset_0_1px_0_hsl(var(--card))] hover:bg-secondary/90",
+          "bg-secondary text-secondary-foreground shadow-[inset_0_1px_0_hsl(var(--card))] hover:bg-secondary/92",
         ghost: "hover:bg-muted/80 hover:text-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },

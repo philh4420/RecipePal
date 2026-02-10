@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 const MealCard = ({ meal, onRemove }: { meal: Meal; onRemove: () => void }) => (
-  <Card className="group relative overflow-hidden border-border/70 bg-card transition-all hover:-translate-y-0.5 hover:shadow-[0_16px_30px_rgba(54,40,24,0.2)]">
+  <Card className="group relative overflow-hidden border-border/70 bg-card transition-all hover:-translate-y-0.5 hover:shadow-[0_16px_30px_rgba(54,40,24,0.18)]">
     <CardContent className="p-0">
       <RecipeImage
         src={meal.recipe.imageUrl}
@@ -84,7 +84,7 @@ const DayMeals = ({ day, dayPlan, onAdd, onRemove }: { day: Date; dayPlan: DayPl
                     {meal ? (
                     <MealCard meal={meal} onRemove={() => onRemove(day, mealType.key)} />
                     ) : (
-                    <Button variant="outline" className="h-24 w-full border-dashed border-border/70 bg-muted/45 hover:bg-muted/65" onClick={() => onAdd(day, mealType.name)}>
+                    <Button variant="outline" className="h-24 w-full border-dashed border-border/70 bg-muted/40 hover:bg-muted/60" onClick={() => onAdd(day, mealType.name)}>
                         <Plus className="h-5 w-5 text-muted-foreground" />
                     </Button>
                     )}
@@ -219,9 +219,10 @@ export function MealPlanCalendar() {
         mealType={modalState.mealType}
         recipes={recipes || []}
       />
-      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-[linear-gradient(135deg,hsl(var(--card))_0%,hsl(var(--card))_55%,hsl(var(--secondary)/0.58)_100%)] p-6 shadow-[0_24px_44px_rgba(51,39,27,0.14)] sm:p-8">
-        <div className="pointer-events-none absolute -left-24 top-0 h-56 w-56 rounded-full bg-primary/18 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 bottom-0 h-56 w-56 rounded-full bg-accent/16 blur-3xl" />
+      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-[linear-gradient(140deg,hsl(var(--card))_0%,hsl(var(--card))_58%,hsl(var(--secondary)/0.55)_100%)] p-6 shadow-[0_24px_44px_rgba(51,39,27,0.13)] sm:p-8">
+        <div className="pointer-events-none absolute -left-24 top-0 h-56 w-56 rounded-full bg-primary/16 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-56 w-56 rounded-full bg-accent/14 blur-3xl" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,hsl(var(--primary)),hsl(var(--accent)))]" />
         <div className="relative">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">Weekly Rhythm</p>
           <h1 className="mt-3 font-headline text-4xl font-semibold tracking-tight">Meal Plan</h1>
@@ -233,12 +234,12 @@ export function MealPlanCalendar() {
 
       {/* Desktop View */}
       <div className="hidden md:block">
-        <ScrollArea className="rounded-2xl border border-border/70 bg-card p-4 shadow-[0_16px_32px_rgba(58,45,34,0.14)]">
+        <ScrollArea className="rounded-2xl border border-border/70 bg-card/95 p-4 shadow-[0_16px_32px_rgba(58,45,34,0.12)]">
             {isLoading ? <CalendarSkeleton /> : (
                 <div className="grid grid-cols-7 gap-4 min-w-[800px]">
                 {weekDays.map((day, index) => (
                     <div key={day.toISOString()} className="space-y-4">
-                    <div className="rounded-xl bg-muted/78 p-2 text-center">
+                    <div className="rounded-xl bg-muted/72 p-2 text-center">
                         <p className="font-headline text-2xl font-semibold">{format(day, 'E')}</p>
                         <p className="text-sm text-muted-foreground">{format(day, 'd')}</p>
                     </div>

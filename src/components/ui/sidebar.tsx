@@ -169,7 +169,7 @@ const Sidebar = (
     return (
       <div
         className={cn(
-          "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground",
+          "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-[hsl(var(--sidebar-foreground))]",
           className
         )}
         {...props}
@@ -185,7 +185,10 @@ const Sidebar = (
         <SheetContent
           data-sidebar="sidebar"
           data-mobile="true"
-          className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+          className={cn(
+            "w-[--sidebar-width] bg-sidebar p-0 text-[hsl(var(--sidebar-foreground))] [&>button]:hidden",
+            className
+          )}
           style={
             {
               "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -201,7 +204,7 @@ const Sidebar = (
 
   return (
     <div
-      className="group peer hidden md:block text-sidebar-foreground"
+      className="group peer hidden text-[hsl(var(--sidebar-foreground))] md:block"
       data-state={state}
       data-collapsible={state === "collapsed" ? collapsible : ""}
       data-variant={variant}
@@ -441,7 +444,7 @@ const SidebarMenuItem = ({ className, ...props }: React.ComponentPropsWithRef<"l
 SidebarMenuItem.displayName = "SidebarMenuItem"
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-xl p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding,background,transform,box-shadow] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[inset_0_1px_0_hsl(var(--sidebar-accent-foreground)/0.06)] focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-primary/20 data-[active=true]:font-semibold data-[active=true]:text-sidebar-foreground data-[active=true]:shadow-[0_10px_20px_rgba(10,8,5,0.24)] data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-9 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+  "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-xl p-2 text-left text-sm text-[hsl(var(--sidebar-foreground))] outline-none ring-sidebar-ring transition-[width,height,padding,background,transform,box-shadow,color] hover:bg-sidebar-accent/90 hover:text-[hsl(var(--sidebar-foreground))] hover:shadow-[inset_0_1px_0_hsl(var(--sidebar-accent-foreground)/0.06)] focus-visible:ring-2 active:bg-sidebar-accent active:text-[hsl(var(--sidebar-foreground))] disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-primary data-[active=true]:font-semibold data-[active=true]:text-[hsl(var(--sidebar-primary-foreground))] data-[active=true]:shadow-[0_10px_20px_rgba(10,8,5,0.24)] data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-[hsl(var(--sidebar-foreground))] group-data-[collapsible=icon]:!size-9 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
   {
     variants: {
       variant: {

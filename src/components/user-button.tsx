@@ -40,7 +40,7 @@ export function UserButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-10 w-10 rounded-full bg-sidebar-accent/30 p-0 hover:bg-sidebar-accent/55">
+        <Button variant="ghost" className="relative h-10 w-10 rounded-full bg-sidebar-accent/30 p-0 text-[hsl(var(--sidebar-foreground))] hover:bg-sidebar-accent/55 hover:text-[hsl(var(--sidebar-foreground))]">
           <Avatar className="h-10 w-10 border border-border/60">
             <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
             <AvatarFallback className="bg-secondary text-secondary-foreground">

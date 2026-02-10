@@ -76,8 +76,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </Link>
           </Button>
           <div className="flex flex-col leading-none">
-            <span className="text-xl font-headline font-semibold tracking-tight text-sidebar-foreground">RecipePal</span>
-            <span className="mt-1 text-[11px] uppercase tracking-[0.2em] text-sidebar-foreground/65">Kitchen Companion</span>
+            <span className="text-xl font-headline font-semibold tracking-tight text-[hsl(var(--sidebar-foreground))]">RecipePal</span>
+            <span className="mt-1 text-[11px] uppercase tracking-[0.2em] text-[hsl(var(--sidebar-foreground)/0.68)]">Kitchen Companion</span>
           </div>
         </SidebarHeader>
         <SidebarContent className="px-2 py-3">
@@ -87,7 +87,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <SidebarMenuButton
                   asChild
                   isActive={pathname.startsWith(item.href)}
-                  className="rounded-xl px-3 py-2 text-[15px] font-medium"
+                  className="rounded-xl px-3 py-2 text-[15px] font-medium text-[hsl(var(--sidebar-foreground))]"
                   tooltip={{
                     children: item.label,
                   }}

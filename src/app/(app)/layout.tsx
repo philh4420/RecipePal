@@ -87,7 +87,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <SidebarMenuButton
                   asChild
                   isActive={pathname.startsWith(item.href)}
-                  className="rounded-xl px-3 py-2 text-[15px] font-medium text-[hsl(var(--sidebar-foreground))]"
+                  className="rounded-xl px-3 py-2 text-[15px] font-medium"
                   tooltip={{
                     children: item.label,
                   }}

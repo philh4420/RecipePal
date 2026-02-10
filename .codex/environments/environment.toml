@@ -5,4 +5,10 @@ name = "RecipePal"
 [setup]
 script = ""
 
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp", "--api-key", "ctx7sk-ae33a8a9-d6a8-47c5-b5ce-6106847c131b"]
 
+[mcp_servers.google-developer-knowledge]
+url = "https://developerknowledge.googleapis.com/mcp"
+http_headers = { X-Goog-Api-Key = "AIzaSyD-mlfRtmpPYJlUZCSyraF8pqkM9PufmrI" }

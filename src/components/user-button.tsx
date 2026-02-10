@@ -49,17 +49,17 @@ export function UserButton() {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
+      <DropdownMenuContent className="w-56 border-border/90 bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] shadow-[0_22px_44px_rgba(15,11,7,0.28)]" align="end" forceMount>
+        <DropdownMenuLabel className="font-normal text-foreground">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">{user.displayName}</p>
-            <p className="text-xs leading-none text-muted-foreground">
+            <p className="text-xs leading-none text-foreground/70">
               {user.email}
             </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleSignOut}>
+        <DropdownMenuItem onClick={handleSignOut} className="text-foreground focus:bg-primary/12 focus:text-foreground">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>

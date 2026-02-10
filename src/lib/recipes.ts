@@ -39,7 +39,7 @@ export function addRecipe(
     : recipeData.ingredients.split('\n').filter(line => line.trim() !== '');
 
   const randomImage = PlaceHolderImages[Math.floor(Math.random() * PlaceHolderImages.length)];
-  const usePlaceholder = options.usePlaceholder ?? true;
+  const usePlaceholder = options.usePlaceholder ?? false;
   const resolvedImageUrl = recipeData.imageUrl || (usePlaceholder ? randomImage.imageUrl : undefined);
 
   const newRecipe: Record<string, any> = {

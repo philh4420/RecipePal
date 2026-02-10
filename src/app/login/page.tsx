@@ -6,7 +6,7 @@ import { useAuth, useFirestore } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { Logo } from '@/components/logo';
-import { useUser } from '@/firebase/auth/use-user';
+import { useUser } from '@/firebase';
 import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -23,7 +23,7 @@ export default function LoginPage() {
 
   React.useEffect(() => {
     if (!loading && user) {
-      router.push('/recipes');
+      router.replace('/recipes');
     }
   }, [user, loading, router]);
 
@@ -35,7 +35,7 @@ export default function LoginPage() {
       const result = await signInWithPopup(auth, provider);
       // Create user profile document on successful sign-in
       createUserProfileDocument(firestore, result.user);
-      router.push('/recipes');
+      router.replace('/recipes');
     } catch (error) {
       console.error('Error signing in with Google', error);
       // You might want to show a toast message here
@@ -45,8 +45,8 @@ export default function LoginPage() {
   if (loading || user) {
     return (
        <div className="flex min-h-screen flex-col items-center justify-center bg-background">
-         <div className="flex items-center justify-center h-screen">
-          <Skeleton className="h-24 w-24" />
+         <div className="recipe-surface flex items-center justify-center p-6">
+          <Skeleton className="h-10 w-40" />
          </div>
        </div>
     )
@@ -56,7 +56,7 @@ export default function LoginPage() {
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background p-4">
       <div className="pointer-events-none absolute -left-28 top-0 h-72 w-72 rounded-full bg-primary/18 blur-3xl" />
       <div className="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-accent/16 blur-3xl" />
-      <Card className="relative w-full max-w-md border-border/70 bg-card/95 shadow-[0_28px_56px_rgba(54,42,30,0.18)]">
+      <Card className="recipe-surface relative w-full max-w-md border-border/70 bg-card/95 shadow-[0_28px_56px_rgba(54,42,30,0.18)]">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,hsl(var(--primary)),hsl(var(--accent)))]" />
         <CardHeader className="text-center">
            <div className="flex justify-center mb-4">

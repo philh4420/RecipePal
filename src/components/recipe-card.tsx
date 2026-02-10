@@ -75,7 +75,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
 
   return (
     <>
-      <Card className="group flex h-full flex-col overflow-hidden border-border/70 bg-card/95 transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/35 hover:shadow-[0_20px_38px_rgba(64,53,40,0.18)]">
+      <Card className="recipe-surface group flex h-full flex-col overflow-hidden border-border/70 bg-card/95 transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/35 hover:shadow-[0_20px_38px_rgba(64,53,40,0.18)]">
         <div className="relative">
            <Link href={`/recipes/${recipe.id}`} className="absolute inset-0 z-10" aria-label={`View ${recipeName}`}>
             <span className="sr-only">View Recipe</span>
@@ -94,7 +94,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
            <div className="absolute top-3 right-3 z-20">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-card/85 hover:bg-card backdrop-blur-sm shadow-md">
+                <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-card/90 backdrop-blur-sm shadow-md hover:bg-card">
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>

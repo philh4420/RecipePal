@@ -25,7 +25,7 @@ export function UserButton() {
   const handleSignOut = async () => {
     if (auth) {
       await auth.signOut();
-      router.push('/login');
+      router.replace('/login');
     }
   };
 
@@ -40,7 +40,10 @@ export function UserButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-10 w-10 rounded-full border border-sidebar-border/70 bg-sidebar-accent/35 p-0 text-sidebar-foreground hover:bg-sidebar-accent/65 hover:text-sidebar-foreground">
+        <Button
+          variant="ghost"
+          className="relative h-10 w-10 rounded-full border border-sidebar-border/70 bg-sidebar-accent/42 p-0 text-sidebar-foreground hover:bg-sidebar-accent/72 hover:text-sidebar-foreground"
+        >
           <Avatar className="h-10 w-10 border border-sidebar-border/70">
             <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
             <AvatarFallback className="bg-secondary text-secondary-foreground">
@@ -50,7 +53,7 @@ export function UserButton() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-56 rounded-xl border-border bg-card text-card-foreground shadow-[0_24px_44px_rgba(7,5,3,0.32)]"
+        className="w-56 rounded-xl border-border/90 bg-card text-card-foreground shadow-[0_24px_44px_rgba(7,5,3,0.32)]"
         align="start"
         side="top"
         sideOffset={10}

@@ -120,11 +120,8 @@ export function ShoppingListClient() {
 
   return (
     <div className="space-y-8">
-      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-[linear-gradient(140deg,hsl(var(--card))_0%,hsl(var(--card))_58%,hsl(var(--secondary)/0.55)_100%)] p-6 shadow-[0_24px_44px_rgba(51,39,27,0.13)] sm:p-8">
-        <div className="pointer-events-none absolute -left-20 -top-20 h-52 w-52 rounded-full bg-primary/16 blur-3xl" />
-        <div className="pointer-events-none absolute -right-16 -bottom-16 h-52 w-52 rounded-full bg-accent/16 blur-3xl" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,hsl(var(--primary)),hsl(var(--accent)))]" />
-        <div className="relative flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+      <div className="recipe-hero p-6 sm:p-8">
+        <div className="recipe-hero-content flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div className="flex-1">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">Weekly Prep</p>
             <h1 className="mt-3 font-headline text-4xl font-semibold tracking-tight">Shopping List</h1>
@@ -143,7 +140,7 @@ export function ShoppingListClient() {
         </div>
       </div>
 
-      <Card className="border-border/70 bg-card/95 shadow-[0_14px_30px_rgba(58,45,34,0.12)]">
+      <Card className="recipe-surface border-border/70 bg-card/95 shadow-[0_14px_30px_rgba(58,45,34,0.12)]">
         <CardHeader>
           <CardTitle className="font-headline text-3xl">Your List</CardTitle>
         </CardHeader>

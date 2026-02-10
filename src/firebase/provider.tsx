@@ -45,6 +45,7 @@ export interface FirebaseServicesAndUser {
 // Return type for useUser() - specific to user auth state
 export interface UserHookResult { // Renamed from UserAuthHookResult for consistency if desired, or keep as UserAuthHookResult
   user: User | null;
+  loading: boolean;
   isUserLoading: boolean;
   userError: Error | null;
 }
@@ -172,5 +173,10 @@ export function useMemoFirebase<T>(factory: () => T, deps: DependencyList): T | 
  */
 export const useUser = (): UserHookResult => { // Renamed from useAuthUser
   const { user, isUserLoading, userError } = useFirebase(); // Leverages the main hook
-  return { user, isUserLoading, userError };
+  return {
+    user,
+    loading: isUserLoading,
+    isUserLoading,
+    userError,
+  };
 };

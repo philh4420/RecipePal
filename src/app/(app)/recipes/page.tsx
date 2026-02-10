@@ -37,11 +37,8 @@ export default function RecipesPage() {
 
   return (
     <div className="space-y-9">
-      <div className="relative overflow-hidden rounded-3xl border border-border/80 bg-[linear-gradient(140deg,hsl(var(--card))_0%,hsl(var(--card))_58%,hsl(var(--secondary)/0.55)_100%)] p-6 shadow-[0_26px_52px_rgba(66,42,18,0.16)] sm:p-8">
-        <div className="pointer-events-none absolute -left-24 top-0 h-60 w-60 rounded-full bg-primary/18 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 bottom-0 h-60 w-60 rounded-full bg-accent/18 blur-3xl" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,hsl(var(--primary)),hsl(var(--accent)))]" />
-        <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+      <div className="recipe-hero p-6 sm:p-8">
+        <div className="recipe-hero-content flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">My Kitchen Notebook</p>
             <h1 className="mt-3 font-headline text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">My Recipes</h1>
@@ -62,15 +59,15 @@ export default function RecipesPage() {
           </Button>
         </div>
 
-        <div className="relative mt-6">
+        <search className="recipe-hero-content relative mt-6">
           <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search recipes by name..."
-            className="h-12 rounded-xl border-border/75 bg-card/95 pl-12 text-base"
+            className="h-12 rounded-xl border-border/75 bg-card pl-12 text-base"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </div>
+        </search>
       </div>
       <AddRecipeModal open={addModalOpen} onOpenChange={setAddModalOpen} />
 
@@ -96,8 +93,7 @@ export default function RecipesPage() {
         </div>
       )}
        {!isLoading && filteredRecipes.length === 0 && (
-        <div className="relative flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-border/55 bg-card/95 px-6 py-24 text-center shadow-[inset_0_1px_0_hsl(var(--background))]">
-          <div className="pointer-events-none absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_60%_85%,hsl(var(--primary)/0.1),transparent_45%)]" />
+        <div className="recipe-empty flex flex-col items-center justify-center px-6 py-24 text-center">
           <BookOpen className="relative h-16 w-16 text-muted-foreground/75" />
           <h2 className="relative mt-6 text-2xl font-semibold">No Recipes Found</h2>
           <p className="mt-2 max-w-sm text-muted-foreground">

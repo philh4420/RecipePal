@@ -39,7 +39,7 @@ export function MobileBottomNav() {
               className={cn(
                 'inline-flex flex-col items-center justify-center rounded-xl px-5 font-medium transition-all',
                 isActive
-                  ? 'bg-primary/16 text-primary shadow-[inset_0_1px_0_hsl(var(--card))]'
+                  ? 'bg-primary/14 text-primary shadow-[inset_0_1px_0_hsl(var(--card))]'
                   : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
               )}
             >

@@ -200,7 +200,7 @@ export function AddRecipeModal({ recipe, open, onOpenChange }: RecipeModalProps)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] overflow-hidden rounded-[28px] border-border/90 bg-[hsl(var(--card))] shadow-[0_36px_82px_rgba(12,10,8,0.5)] sm:max-w-[760px]">
+      <DialogContent className="recipe-modal max-h-[90vh] overflow-hidden sm:max-w-[760px]">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,hsl(var(--primary)),hsl(var(--accent)))]" />
         <DialogHeader>
           <DialogTitle className="font-headline text-3xl tracking-tight">{isEditMode ? 'Edit Recipe' : 'Add a New Recipe'}</DialogTitle>
@@ -216,7 +216,7 @@ export function AddRecipeModal({ recipe, open, onOpenChange }: RecipeModalProps)
           {!isEditMode && 
             <TabsContent value="import">
               <Form {...importForm}>
-                <form onSubmit={importForm.handleSubmit(handleImportSubmit)} className="space-y-4 rounded-2xl border border-border/70 bg-muted/35 p-4">
+                <form onSubmit={importForm.handleSubmit(handleImportSubmit)} className="recipe-surface-soft space-y-4 p-4">
                   <FormField
                     control={importForm.control}
                     name="url"
@@ -249,7 +249,7 @@ export function AddRecipeModal({ recipe, open, onOpenChange }: RecipeModalProps)
           }
           <TabsContent value="manual">
             <Form {...manualForm}>
-              <form onSubmit={manualForm.handleSubmit(handleManualSubmit)} className="max-h-[62vh] space-y-4 overflow-y-auto rounded-2xl border border-border/70 bg-muted/35 p-4 pr-3">
+              <form onSubmit={manualForm.handleSubmit(handleManualSubmit)} className="recipe-surface-soft max-h-[62vh] space-y-4 overflow-y-auto p-4 pr-3">
                 <FormField
                   control={manualForm.control}
                   name="name"

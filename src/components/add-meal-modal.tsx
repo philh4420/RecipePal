@@ -17,11 +17,13 @@ import { Loader } from 'lucide-react';
 import { Button } from './ui/button';
 import { RecipeImage } from '@/components/recipe-image';
 
+type MealType = 'breakfast' | 'lunch' | 'dinner';
+
 interface AddMealModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   day: Date | null;
-  mealType: string | null;
+  mealType: MealType | null;
   recipes: Recipe[];
 }
 
@@ -42,7 +44,7 @@ export function AddMealModal({ open, onOpenChange, day, mealType, recipes }: Add
     }
     setIsSaving(recipe.id);
     try {
-      await addRecipeToMealPlan(firestore, user.uid, day, mealType.toLowerCase() as any, recipe.id);
+      await addRecipeToMealPlan(firestore, user.uid, day, mealType, recipe.id);
       toast({
         title: 'Meal Added!',
         description: `${recipe.name} has been added to your ${mealType}.`,
@@ -62,7 +64,7 @@ export function AddMealModal({ open, onOpenChange, day, mealType, recipes }: Add
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="rounded-3xl border-border/90 bg-[hsl(var(--card))] shadow-[0_36px_82px_rgba(12,10,8,0.5)] sm:max-w-2xl">
+      <DialogContent className="recipe-modal sm:max-w-2xl">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,hsl(var(--primary)),hsl(var(--accent)))]" />
         <DialogHeader>
           <DialogTitle className="font-headline text-3xl tracking-tight">Add a recipe to your {mealType}</DialogTitle>
@@ -70,7 +72,7 @@ export function AddMealModal({ open, onOpenChange, day, mealType, recipes }: Add
             Select one of your saved recipes to add to the meal plan.
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="max-h-[60vh] rounded-2xl border border-border/70 bg-muted/35 p-3">
+        <ScrollArea className="recipe-surface-soft max-h-[60vh] p-3">
           <div className="grid grid-cols-1 gap-4 p-1 sm:grid-cols-2 lg:grid-cols-3">
             {recipes.map((recipe) => (
               <div

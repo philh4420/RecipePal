@@ -48,15 +48,18 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     if (!loading && !user) {
-      router.push('/login');
+      router.replace('/login');
     }
   }, [user, loading, router]);
 
 
   if (loading || !user) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <Loader className="h-8 w-8 animate-spin" />
+      <div className="flex h-screen w-full items-center justify-center bg-background">
+        <div className="recipe-surface flex items-center gap-3 px-5 py-4">
+          <Loader className="h-5 w-5 animate-spin text-primary" />
+          <span className="text-sm font-medium text-muted-foreground">Loading your kitchen...</span>
+        </div>
       </div>
     );
   }
@@ -70,7 +73,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         className="border-sidebar-border/90 bg-sidebar text-sidebar-foreground shadow-[0_24px_44px_rgba(6,4,2,0.34)]"
       >
         <SidebarHeader className="border-b border-sidebar-border/70 bg-sidebar px-3 py-5">
-          <Button variant="ghost" size="icon" className="size-10 shrink-0 rounded-xl bg-sidebar-accent/88 text-sidebar-foreground shadow-[inset_0_1px_0_hsl(var(--sidebar-accent-foreground)/0.1)] hover:bg-sidebar-accent hover:text-sidebar-foreground" asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-10 shrink-0 rounded-xl bg-sidebar-accent/88 text-sidebar-foreground shadow-[inset_0_1px_0_hsl(var(--sidebar-accent-foreground)/0.1)] hover:bg-sidebar-accent hover:text-sidebar-foreground"
+            asChild
+          >
             <Link href="/recipes">
               <Logo className='size-5'/>
             </Link>
@@ -87,7 +95,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <SidebarMenuButton
                   asChild
                   isActive={pathname.startsWith(item.href)}
-                  className="rounded-xl px-3 py-2 text-[15px] font-medium"
+                  className="rounded-xl px-3 py-2 text-[15px] font-medium tracking-tight"
                   tooltip={{
                     children: item.label,
                   }}

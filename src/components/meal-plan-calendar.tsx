@@ -27,6 +27,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
+type MealType = 'breakfast' | 'lunch' | 'dinner';
+
+const MEAL_TYPES: Array<{ label: string; key: MealType }> = [
+  { label: 'Breakfast', key: 'breakfast' },
+  { label: 'Lunch', key: 'lunch' },
+  { label: 'Dinner', key: 'dinner' },
+];
+
 const MealCard = ({ meal, onRemove }: { meal: Meal; onRemove: () => void }) => (
   <Card className="group relative overflow-hidden border-border/70 bg-card transition-all hover:-translate-y-0.5 hover:shadow-[0_16px_30px_rgba(54,40,24,0.18)]">
     <CardContent className="p-0">
@@ -66,25 +74,37 @@ const MealCard = ({ meal, onRemove }: { meal: Meal; onRemove: () => void }) => (
   </Card>
 );
 
-const DayMeals = ({ day, dayPlan, onAdd, onRemove }: { day: Date; dayPlan: DayPlan; onAdd: (day: Date, mealType: string) => void; onRemove: (day: Date, mealType: string) => void; }) => {
-    const mealTypes: Array<{ name: 'Breakfast'; key: 'breakfast' }, { name: 'Lunch'; key: 'lunch' }, { name: 'Dinner'; key: 'dinner' }> = ['Breakfast', 'Lunch', 'Dinner'].map(n => ({name: n, key: n.toLowerCase() as any}));
-
+const DayMeals = ({
+  day,
+  dayPlan,
+  onAdd,
+  onRemove,
+}: {
+  day: Date;
+  dayPlan: DayPlan;
+  onAdd: (day: Date, mealType: MealType) => void;
+  onRemove: (day: Date, mealType: MealType) => void;
+}) => {
     return (
         <div className="space-y-4">
-            {mealTypes.map((mealType) => {
+            {MEAL_TYPES.map((mealType) => {
             const meal = dayPlan[mealType.key];
             return (
-                <Card key={mealType.name} className="border-border/70 bg-card">
+                <Card key={mealType.key} className="border-border/70 bg-card">
                 <CardHeader className="p-3">
                     <CardTitle className="font-headline text-lg font-semibold">
-                    {mealType.name}
+                    {mealType.label}
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="p-3 pt-0">
                     {meal ? (
                     <MealCard meal={meal} onRemove={() => onRemove(day, mealType.key)} />
                     ) : (
-                    <Button variant="outline" className="h-24 w-full border-dashed border-border/70 bg-muted/40 hover:bg-muted/60" onClick={() => onAdd(day, mealType.name)}>
+                    <Button
+                      variant="outline"
+                      className="h-24 w-full border-dashed border-border/70 bg-muted/40 hover:bg-muted/60"
+                      onClick={() => onAdd(day, mealType.key)}
+                    >
                         <Plus className="h-5 w-5 text-muted-foreground" />
                     </Button>
                     )}
@@ -141,7 +161,7 @@ export function MealPlanCalendar() {
   const endOfWeekDate = useMemo(() => currentDate ? endOfWeek(currentDate, { weekStartsOn }) : null, [currentDate]);
   const weekDays = useMemo(() => startOfWeekDate ? Array.from({ length: 7 }).map((_, i) => addDays(startOfWeekDate, i)) : [], [startOfWeekDate]);
 
-  const [modalState, setModalState] = useState<{open: boolean, day: Date | null, mealType: string | null}>({open: false, day: null, mealType: null});
+  const [modalState, setModalState] = useState<{open: boolean, day: Date | null, mealType: MealType | null}>({open: false, day: null, mealType: null});
 
   const recipesQuery = useMemoFirebase(() => {
     if (!user || !firestore) return null;
@@ -187,14 +207,14 @@ export function MealPlanCalendar() {
   }, [recipes, mealPlanDocs, weekDays, isLoadingRecipes, isLoadingMealPlans]);
 
 
-  const handleAddMealClick = (day: Date, mealType: string) => {
+  const handleAddMealClick = (day: Date, mealType: MealType) => {
     setModalState({ open: true, day, mealType });
   };
 
-  const handleRemoveMeal = async (day: Date, mealType: string) => {
+  const handleRemoveMeal = async (day: Date, mealType: MealType) => {
       if (!firestore || !user) return;
       try {
-        await removeRecipeFromMealPlan(firestore, user.uid, day, mealType.toLowerCase() as any);
+        await removeRecipeFromMealPlan(firestore, user.uid, day, mealType);
         toast({
             title: "Meal Removed",
             description: "The meal has been removed from your plan.",
@@ -219,11 +239,8 @@ export function MealPlanCalendar() {
         mealType={modalState.mealType}
         recipes={recipes || []}
       />
-      <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-[linear-gradient(140deg,hsl(var(--card))_0%,hsl(var(--card))_58%,hsl(var(--secondary)/0.55)_100%)] p-6 shadow-[0_24px_44px_rgba(51,39,27,0.13)] sm:p-8">
-        <div className="pointer-events-none absolute -left-24 top-0 h-56 w-56 rounded-full bg-primary/16 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 bottom-0 h-56 w-56 rounded-full bg-accent/14 blur-3xl" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,hsl(var(--primary)),hsl(var(--accent)))]" />
-        <div className="relative">
+      <div className="recipe-hero p-6 sm:p-8">
+        <div className="recipe-hero-content">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">Weekly Rhythm</p>
           <h1 className="mt-3 font-headline text-4xl font-semibold tracking-tight">Meal Plan</h1>
           <p className="mt-2 text-muted-foreground">
@@ -234,7 +251,7 @@ export function MealPlanCalendar() {
 
       {/* Desktop View */}
       <div className="hidden md:block">
-        <ScrollArea className="rounded-2xl border border-border/70 bg-card/95 p-4 shadow-[0_16px_32px_rgba(58,45,34,0.12)]">
+        <ScrollArea className="recipe-surface p-4">
             {isLoading ? <CalendarSkeleton /> : (
                 <div className="grid grid-cols-7 gap-4 min-w-[800px]">
                 {weekDays.map((day, index) => (
